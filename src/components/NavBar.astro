@@ -1,0 +1,92 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import { Icon } from 'astro-icon/components'
+
+type Props = HTMLAttributes<'nav'>
+
+interface AnchorProps extends HTMLAttributes<'a'> {
+  icon: string
+  text: string
+}
+
+const {
+  url: { pathname },
+  props,
+} = Astro
+
+const navList: AnchorProps[] = [
+  { href: '/', text: 'Home', icon: 'home' },
+  { href: '/collection', text: 'Collection', icon: 'library' },
+  { href: '/about', text: 'About', icon: 'person' },
+  { href: '/blogroll', text: 'Blogroll', icon: 'link' },
+  { href: '/rss.xml', text: 'Feed', icon: 'rss', type: 'application/rss+xml', target: '_blank' },
+]
+---
+
+<nav {...props}>
+  {
+    navList.map(({ href, icon, text, class: className, ...props }) => {
+      const isActive = href === pathname || href === '/' + pathname.match(/[^/]+/g)?.[0]
+      return (
+        <a href={href} class:list={[className, { active: isActive }]} {...props}>
+          <Icon name={icon} title={text} />
+          <span>{text}</span>
+        </a>
+      )
+    })
+  }
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    place-content: center;
+
+    a {
+      position: relative;
+      flex: 1 1 auto;
+      padding: 0.75rem;
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+      place-content: center;
+      place-items: center;
+      color: var(--c-text-bland);
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-decoration: none;
+
+      &.active {
+        font-weight: 500;
+        color: var(--c-primary);
+
+        svg[data-icon] {
+          stroke: var(--c-primary);
+          stroke-width: 0.02rem;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        background: var(--c-text);
+        bottom: 0;
+        left: 100%;
+        width: 0;
+        height: 1.5px;
+        transition: all 0.2s linear;
+      }
+
+      &:hover::after {
+        left: 0;
+        width: 100%;
+        transition-delay: 0.1s;
+      }
+
+      &:hover ~ *::after {
+        left: 0;
+      }
+    }
+  }
+</style>

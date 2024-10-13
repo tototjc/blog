@@ -1,0 +1,33 @@
+---
+const year = new Date().getFullYear()
+---
+
+<div>
+  <p>
+    &copy; {year}
+    <a href="https://github.com/tototjc" rel="noopener noreferrer" target="_blank">Gaaising Tam</a>. Unless otherwise
+    noted, all content on this site is licensed under <a
+      href="https://creativecommons.org/licenses/by-nc-sa/4.0"
+      rel="noopener noreferrer"
+      target="_blank">CC BY-NC-SA 4.0</a
+    >.
+  </p>
+  <p>Powered by <a href="https://astro.build" rel="noopener noreferrer" target="_blank">Astro</a></p>
+</div>
+
+<style>
+  div {
+    text-align: center;
+    color: var(--c-text-bland);
+    cursor: default;
+
+    p {
+      font-size: 0.85rem;
+      margin-block: 0.15rem;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+</style>

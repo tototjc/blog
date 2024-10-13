@@ -1,0 +1,95 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import FormattedCategory from './util/FormattedCategory.astro'
+import FormattedDate from './util/FormattedDate.astro'
+
+interface PostListItem {
+  link: string
+  title: string
+  summary?: string
+  category?: string
+  pubDate?: Date
+}
+
+interface Props extends HTMLAttributes<'ul'> {
+  list: PostListItem[]
+}
+
+const { list, ...props } = Astro.props
+---
+
+<ul {...props}>
+  {
+    list.map(async ({ link, title, summary, category, pubDate }, index, arr) => (
+      <>
+        <li>
+          <a href={`/${link}`}>
+            <h4>{title}</h4>
+            {summary && <p>{summary}</p>}
+          </a>
+          <div>
+            {category && <FormattedCategory category={category} />}
+            {pubDate && <FormattedDate date={pubDate} />}
+          </div>
+        </li>
+        {index !== arr.length - 1 && <hr />}
+      </>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    list-style: none;
+    cursor: default;
+
+    hr {
+      background: var(--c-text);
+      height: 1px;
+      width: 100%;
+    }
+
+    li {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      color: var(--c-text);
+
+      & > a {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        h4 {
+          font-size: 1.25rem;
+          font-weight: 500;
+          position: relative;
+        }
+
+        p {
+          font-size: 1.1rem;
+          font-weight: 400;
+        }
+      }
+
+      & > div {
+        display: flex;
+        place-content: space-between;
+        font-weight: 400;
+        font-size: 0.9rem;
+
+        a {
+          background-color: var(--c-bg-mute);
+          padding: 0 0.5rem;
+          border-radius: 0.25rem;
+        }
+      }
+    }
+  }
+</style>

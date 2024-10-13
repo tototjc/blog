@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<BaseLayout>
+  <div>
+    <h1>404 - Page Not Found</h1>
+    <p>Sorry, the page you are looking for does not exist.</p>
+    <a href="/">Go back to the homepage</a>
+  </div>
+</BaseLayout>
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+    color: var(--c-text);
+    cursor: default;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    a {
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+  }
+</style>

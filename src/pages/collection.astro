@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content'
+
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import ArticleHeader from '@/components/ArticleHeader.astro'
+
+const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
+
+const groupedPosts = new Map([
+  [
+    'archive',
+    Map.groupBy(
+      allPosts.sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf()),
+      post => post.data.pubDate?.getFullYear().toString() ?? 'others',
+    ),
+  ],
+  [
+    'category',
+    Map.groupBy(
+      allPosts.sort((a, b) =>
+        (a.data.category ?? '').localeCompare(b.data.category ?? '', 'zh-Hans-CN', { sensitivity: 'accent' }),
+      ),
+      post => post.data.category ?? 'others',
+    ),
+  ],
+])
+---
+
+<BaseLayout title="Collection">
+  <ArticleHeader title="Collection" />
+  {
+    Array.from(groupedPosts, ([sort, group]) => (
+      <section>
+        <h2>{sort}</h2>
+        <ul>
+          {Array.from(group, ([label, posts]) => (
+            <li>
+              <a href={`/${sort}/${label}/1`}>
+                <span>{label}</span>
+                <i>﹝{posts.length}﹞</i>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  section {
+    margin: 1.5rem;
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--c-text-bland);
+      cursor: default;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      padding: 0.5rem;
+
+      li a {
+        display: flex;
+        place-items: center;
+        place-content: center;
+
+        span {
+          font-size: 1.2rem;
+          color: var(--c-text);
+        }
+
+        i {
+          font-style: normal;
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--c-text-bland);
+        }
+
+        &:hover {
+          span {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+</style>

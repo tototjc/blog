@@ -1,0 +1,163 @@
+article {
+  color: var(--c-text);
+  font-size: 1rem;
+  overflow-wrap: break-word;
+  text-align: start;
+  line-height: 1.5;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-block: 0.7em 0.2em;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.3em;
+  }
+
+  h4 {
+    font-size: 1.2em;
+  }
+
+  h5 {
+    font-size: 1.1em;
+  }
+
+  h6 {
+    font-size: 1em;
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  del {
+    color: var(--c-text-bland);
+  }
+
+  a {
+    color: var(--c-text-bland);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--c-text);
+    }
+  }
+
+  p {
+    margin-block: 0.5em;
+  }
+
+  ul,
+  ol {
+    margin-block: 0.5em;
+    padding-inline: 1em;
+
+    li {
+      margin-block: 0.5em;
+
+      &::marker {
+        color: var(--c-text-bland);
+      }
+    }
+  }
+
+  blockquote {
+    margin-block: 0.5em;
+    border-inline-start: 0.2em solid var(--c-text-bland);
+    padding-inline-start: 0.75em;
+
+    & > :first-child {
+      margin-block-start: 0;
+    }
+
+    & > :last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  hr {
+    margin-block: 0.5em;
+    height: 0.05em;
+    background: var(--c-text-bland);
+    border: none;
+    border-style: inset;
+    border-width: 0.05em;
+  }
+
+  mark {
+    padding-inline: 0.1em;
+    padding-block: 0.05em;
+    background: #ffc;
+  }
+
+  pre,
+  code {
+    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', ui-monospace, monospace;
+  }
+
+  code {
+    padding-inline: 0.2em;
+    padding-block: 0.1em;
+    border-radius: 0.25em;
+    border: 0.05em solid var(--c-text-bland);
+    background: var(--c-bg-soft);
+  }
+
+  pre {
+    margin-block: 0.5em;
+    padding: 0.8em 1em;
+    border-radius: 0.25em;
+    border: 0.05em solid var(--c-text-bland);
+
+    & > code {
+      all: unset;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+
+    th {
+      font-weight: 500;
+    }
+
+    td {
+      font-weight: 400;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: middle;
+      padding: 0.5em;
+      border: 0.05em solid var(--c-text-bland);
+    }
+  }
+
+  .astro-code,
+  .astro-code span {
+    @media (prefers-color-scheme: dark) {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+}

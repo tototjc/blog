@@ -1,0 +1,90 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import FormattedCategory from './util/FormattedCategory.astro'
+import FormattedDate from './util/FormattedDate.astro'
+
+interface Props extends HTMLAttributes<'header'> {
+  title: string
+  category?: string
+  info?: {
+    pubDate?: Date
+    updDate?: Date
+    words?: number
+  }
+}
+
+const { title, category, info, ...props } = Astro.props
+---
+
+<header {...props}>
+  <h1>{title}</h1>
+  {
+    category && (
+      <div class="category">
+        「 <FormattedCategory category={category} /> 」
+      </div>
+    )
+  }
+  {
+    info && (
+      <div class="info">
+        <div>
+          {info.pubDate && (
+            <span>
+              Publish: <FormattedDate date={info.pubDate} />
+            </span>
+          )}
+          {info.updDate && (
+            <span>
+              Update: <FormattedDate date={info.updDate} />
+            </span>
+          )}
+        </div>
+        <div>{info.words && <span>{info.words} words</span>}</div>
+      </div>
+    )
+  }
+</header>
+
+<style>
+  header {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    gap: 1rem;
+    color: var(--c-text);
+    cursor: default;
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .category {
+      font-size: 1.1rem;
+      color: var(--c-text-bland);
+
+      &:hover {
+        color: var(--c-text);
+      }
+    }
+
+    .info {
+      padding: 1rem 0;
+
+      &,
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 0.5rem;
+      }
+
+      font-size: 0.9rem;
+      width: 100%;
+      justify-content: space-between;
+      color: var(--c-text-bland);
+    }
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+import type { ComponentProps } from 'astro/types'
+import ArticleHeader from '@/components/ArticleHeader.astro'
+
+import BaseLayout from './BaseLayout.astro'
+
+interface Props {
+  articleTitle: string
+  summary?: string
+  headerProps: ComponentProps<typeof ArticleHeader>
+}
+
+const { articleTitle, summary, headerProps } = Astro.props
+---
+
+<BaseLayout title={articleTitle} description={summary}>
+  <ArticleHeader id="_top" {...headerProps} />
+  <article>
+    <slot />
+  </article>
+</BaseLayout>

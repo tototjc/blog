@@ -1,0 +1,76 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { Icon } from 'astro-icon/components'
+
+interface Props extends HTMLAttributes<'div'> {
+  paginate: {
+    currentPage: number
+    lastPage: number
+    url: {
+      prev?: string
+      next?: string
+    }
+  }
+}
+
+const { paginate, ...props } = Astro.props
+---
+
+<div {...props}>
+  {
+    paginate.url.prev && (
+      <a href={paginate.url.prev}>
+        <Icon name="left" title="Previous" />
+      </a>
+    )
+  }
+  {
+    Array.from({ length: paginate.lastPage }, (_, i) => i + 1).map(page => (
+      <a class:list={['num', { active: page === paginate.currentPage }]} href={`/${page}`}>
+        {page}
+      </a>
+    ))
+  }
+  {
+    paginate.url.next && (
+      <a href={paginate.url.next}>
+        <Icon name="right" title="Next" />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--c-text);
+    font-size: 1rem;
+    font-weight: 400;
+
+    a {
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.2rem;
+      transition: 0.3s background ease-in-out;
+
+      &:hover {
+        background: var(--c-bg-mute);
+      }
+
+      &.active {
+        transform: scale(1.2);
+        font-weight: 600;
+      }
+
+      &.num:not(.active) {
+        color: var(--c-text-bland);
+      }
+    }
+  }
+</style>
