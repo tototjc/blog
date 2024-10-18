@@ -64,7 +64,8 @@ article {
   ul,
   ol {
     margin-block: 0.5em;
-    padding-inline: 1em;
+    margin-inline: 0.25em;
+    padding-inline-start: 1em;
 
     li {
       margin-block: 0.5em;
@@ -77,8 +78,9 @@ article {
 
   blockquote {
     margin-block: 0.5em;
+    margin-inline: 0.25em;
     border-inline-start: 0.2em solid var(--c-text-bland);
-    padding-inline-start: 0.75em;
+    padding-inline-start: 0.5em;
 
     & > :first-child {
       margin-block-start: 0;
@@ -90,7 +92,7 @@ article {
   }
 
   hr {
-    margin-block: 0.5em;
+    margin-block: 1.5em;
     height: 0.05em;
     background: var(--c-text-bland);
     border: none;
@@ -119,6 +121,7 @@ article {
 
   pre {
     margin-block: 0.5em;
+    margin-inline: 0.25em;
     padding: 0.8em 1em;
     border-radius: 0.25em;
     border: 0.05em solid var(--c-text-bland);
@@ -134,19 +137,25 @@ article {
   }
 
   table {
+    display: block;
+    max-width: 100%;
+    overflow: auto;
+    margin-block: 0.5em;
+    margin-inline: 0.25em;
     border-collapse: collapse;
 
     th {
       font-weight: 500;
+      text-align: center;
     }
 
     td {
       font-weight: 400;
+      text-align: left;
     }
 
     th,
     td {
-      text-align: left;
       vertical-align: middle;
       padding: 0.5em;
       border: 0.05em solid var(--c-text-bland);

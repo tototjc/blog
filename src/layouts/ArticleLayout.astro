@@ -4,16 +4,17 @@ import ArticleHeader from '@/components/ArticleHeader.astro'
 
 import BaseLayout from './BaseLayout.astro'
 
-interface Props {
-  articleTitle: string
-  summary?: string
+import '@/styles/markdown.css'
+import 'katex/dist/katex.css'
+
+interface Props extends ComponentProps<typeof BaseLayout> {
   headerProps: ComponentProps<typeof ArticleHeader>
 }
 
-const { articleTitle, summary, headerProps } = Astro.props
+const { headerProps, ...props } = Astro.props
 ---
 
-<BaseLayout title={articleTitle} description={summary}>
+<BaseLayout {...props}>
   <ArticleHeader id="_top" {...headerProps} />
   <article>
     <slot />

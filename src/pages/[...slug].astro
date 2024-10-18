@@ -4,9 +4,6 @@ import { render } from 'astro:content'
 import ArticleLayout from '@/layouts/ArticleLayout.astro'
 import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
 
-import '@/styles/markdown.css'
-import 'katex/dist/katex.css'
-
 export const getStaticPaths = async () =>
   (await getCollection('blog')).map(entry => ({
     params: { slug: entry.id },
@@ -26,16 +23,18 @@ const { title, category, pubDate, updDate } = entry.data
 const info = new MdAdditionalInfo(entry.body ?? '')
 
 const articleProps = {
-  articleTitle: title,
-  summary: info.getSummary(),
+  title,
+  description: info.getSummary(),
   headerProps: {
     title,
     category,
-    info: {
-      pubDate,
-      updDate,
-      words: info.getReadingTime().words.total,
-    },
+    info: entry.id.startsWith('post/')
+      ? {
+          pubDate,
+          updDate,
+          words: info.getReadingTime().words.total,
+        }
+      : undefined,
   },
 }
 ---

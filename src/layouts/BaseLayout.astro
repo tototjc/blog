@@ -23,7 +23,7 @@ const {
 <!doctype html>
 <html lang={currentLocale}>
   <head>
-    <BaseHead title={title ? `${title} | ${SITE_TITLE}` : SITE_TITLE} description={description} />
+    <BaseHead title={title && `${title} | ${SITE_TITLE}`} description={description} />
     <ViewTransitions />
   </head>
   <body>
@@ -71,7 +71,7 @@ const {
       main {
         margin: 0 auto;
         max-width: 45rem;
-        padding: 2rem 1rem 1.5rem;
+        padding: 1rem;
         min-height: 75vh;
       }
 
