@@ -25,17 +25,12 @@ const info = new MdAdditionalInfo(entry.body ?? '')
 const articleProps = {
   title,
   description: info.getSummary(),
-  headerProps: {
-    title,
+  ...(entry.id.startsWith('post/') && {
     category,
-    info: entry.id.startsWith('post/')
-      ? {
-          pubDate,
-          updDate,
-          words: info.getReadingTime().words.total,
-        }
-      : undefined,
-  },
+    pubDate,
+    updDate,
+    words: info.getReadingTime().words.total,
+  }),
 }
 ---
 

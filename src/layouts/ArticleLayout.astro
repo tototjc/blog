@@ -8,14 +8,18 @@ import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
 
 interface Props extends ComponentProps<typeof BaseLayout> {
-  headerProps: ComponentProps<typeof ArticleHeader>
+  title: string
+  category?: string
+  pubDate?: Date
+  updDate?: Date
+  words?: number
 }
 
-const { headerProps, ...props } = Astro.props
+const { title, category, pubDate, updDate, words, ...props } = Astro.props
 ---
 
 <BaseLayout {...props}>
-  <ArticleHeader id="_top" {...headerProps} />
+  <ArticleHeader id="_top" {...{ title, category, pubDate, updDate, words }} />
   <article>
     <slot />
   </article>

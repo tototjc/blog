@@ -7,14 +7,12 @@ import FormattedDate from './util/FormattedDate.astro'
 interface Props extends HTMLAttributes<'header'> {
   title: string
   category?: string
-  info?: {
-    pubDate?: Date
-    updDate?: Date
-    words?: number
-  }
+  pubDate?: Date
+  updDate?: Date
+  words?: number
 }
 
-const { title, category, info, ...props } = Astro.props
+const { title, category, pubDate, updDate, words, ...props } = Astro.props
 ---
 
 <header {...props}>
@@ -22,26 +20,28 @@ const { title, category, info, ...props } = Astro.props
   {
     category && (
       <div class="category">
-        「 <FormattedCategory category={category} /> 」
+        <span>
+          「 <FormattedCategory category={category} /> 」
+        </span>
       </div>
     )
   }
   {
-    info && (
+    (pubDate ?? updDate ?? words) && (
       <div class="info">
         <div>
-          {info.pubDate && (
+          {pubDate && (
             <span>
-              Publish: <FormattedDate date={info.pubDate} />
+              Publish: <FormattedDate date={pubDate} />
             </span>
           )}
-          {info.updDate && (
+          {updDate && (
             <span>
-              Update: <FormattedDate date={info.updDate} />
+              Update: <FormattedDate date={updDate} />
             </span>
           )}
         </div>
-        <div>{info.words && <span>{info.words} words</span>}</div>
+        <div>{words && <span>{words} words</span>}</div>
       </div>
     )
   }
@@ -54,36 +54,35 @@ const { title, category, info, ...props } = Astro.props
     flex-direction: column;
     place-items: center;
     gap: 1rem;
-    color: var(--c-text);
     cursor: default;
 
     h1 {
       font-size: 1.6rem;
       font-weight: 500;
-      text-align: center;
+      color: var(--c-text);
     }
 
     .category {
       font-size: 1.1rem;
       color: var(--c-text-bland);
 
-      &:hover {
+      span:hover {
         color: var(--c-text);
       }
     }
 
     .info {
+      font-size: 0.9rem;
+      color: var(--c-text-bland);
+      width: 100%;
+      justify-content: space-between;
+
       &,
       & > div {
         display: flex;
         flex-wrap: wrap;
         gap: 0 0.5rem;
       }
-
-      font-size: 0.9rem;
-      width: 100%;
-      justify-content: space-between;
-      color: var(--c-text-bland);
     }
   }
 </style>
