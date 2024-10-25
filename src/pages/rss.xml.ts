@@ -11,9 +11,10 @@ export const GET: APIRoute = async context =>
     site: context.site ?? '',
     items: (await getCollection('blog', ({ id }) => id.startsWith('post/')))
       .map(entry => ({
-        link: entry.id,
         ...entry.data,
+        link: entry.id,
         description: new MdAdditionalInfo(entry.body ?? '').getSummary(),
       }))
       .sort((a, b) => (b.pubDate ?? 0).valueOf() - (a.pubDate ?? 0).valueOf()),
+    stylesheet: '/rss/styles.xsl',
   })
