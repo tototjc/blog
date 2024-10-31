@@ -48,18 +48,16 @@ const {
     body {
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
       background: var(--c-bg);
-      font-family: Quotes, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', system-ui, ui-sans-serif, sans-serif;
       direction: ltr;
-      text-rendering: optimizelegibility;
-      font-synthesis: none;
+      font: normal 1rem/1.5 var(--font-default);
       font-optical-sizing: auto;
+      text-rendering: optimizelegibility;
       text-size-adjust: 100%;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
 
-      header {
+      & > header {
         position: sticky;
         top: 0;
         z-index: 1;
@@ -68,14 +66,14 @@ const {
         background: var(--c-bg);
       }
 
-      main {
+      & > main {
         margin: 0 auto;
         max-width: 45rem;
         padding: 1rem;
         min-height: 75vh;
       }
 
-      footer {
+      & > footer {
         margin: 0 auto;
         max-width: 45rem;
         padding: 1rem;

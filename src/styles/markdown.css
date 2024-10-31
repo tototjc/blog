@@ -1,9 +1,10 @@
 article {
   color: var(--c-text);
   font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.02rem;
   overflow-wrap: break-word;
   text-align: start;
-  line-height: 1.5;
 
   h1,
   h2,
@@ -39,21 +40,22 @@ article {
     font-size: 1em;
   }
 
-  strong,
-  b {
+  strong {
     font-weight: 600;
   }
 
   del {
     color: var(--c-text-bland);
+    text-decoration-color: currentcolor;
   }
 
   a {
-    color: var(--c-text-bland);
-    text-decoration: underline;
+    color: var(--c-active);
+    text-decoration: dashed underline currentcolor 0.1em;
+    text-underline-offset: 0.2em;
 
     &:hover {
-      color: var(--c-text);
+      text-decoration-style: solid;
     }
   }
 
@@ -62,9 +64,16 @@ article {
   }
 
   ul,
-  ol {
+  ol,
+  blockquote,
+  pre,
+  table {
     margin-block: 0.5em;
     margin-inline: 0.25em;
+  }
+
+  ul,
+  ol {
     padding-inline-start: 1em;
 
     li {
@@ -73,12 +82,18 @@ article {
       &::marker {
         color: var(--c-text-bland);
       }
+
+      &.task-list-item {
+        list-style-type: none;
+
+        & > input[type='checkbox'] {
+          margin-inline-start: -1em;
+        }
+      }
     }
   }
 
   blockquote {
-    margin-block: 0.5em;
-    margin-inline: 0.25em;
     border-inline-start: 0.2em solid var(--c-text-bland);
     padding-inline-start: 0.5em;
 
@@ -100,15 +115,27 @@ article {
     border-width: 0.05em;
   }
 
-  mark {
-    padding-inline: 0.1em;
-    padding-block: 0.05em;
-    background: #ffc;
+  p:has(img) {
+    margin-inline: 0.25em;
+    text-align: center;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  pre,
+  table {
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-text-bland) transparent;
   }
 
   pre,
   code {
-    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', ui-monospace, monospace;
+    font-family: var(--font-monospace);
   }
 
   code {
@@ -120,39 +147,21 @@ article {
   }
 
   pre {
-    margin-block: 0.5em;
-    margin-inline: 0.25em;
-    padding: 0.8em 1em;
+    padding: 0.35em 0.7em;
     border-radius: 0.25em;
     border: 0.05em solid var(--c-text-bland);
 
     & > code {
       all: unset;
+      font-size: 0.9em;
     }
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
   }
 
   table {
     display: block;
     max-width: 100%;
     overflow: auto;
-    margin-block: 0.5em;
-    margin-inline: 0.25em;
     border-collapse: collapse;
-
-    th {
-      font-weight: 500;
-      text-align: center;
-    }
-
-    td {
-      font-weight: 400;
-      text-align: left;
-    }
 
     th,
     td {
@@ -160,13 +169,23 @@ article {
       padding: 0.5em;
       border: 0.05em solid var(--c-text-bland);
     }
+
+    th {
+      font-weight: 500;
+    }
+
+    td {
+      font-weight: 400;
+    }
   }
 
-  .astro-code,
-  .astro-code span {
-    @media (prefers-color-scheme: dark) {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
+  .astro-code {
+    &,
+    & span {
+      @media (prefers-color-scheme: dark) {
+        color: var(--shiki-dark) !important;
+        background-color: var(--shiki-dark-bg) !important;
+      }
     }
   }
 }

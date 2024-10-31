@@ -49,7 +49,7 @@ const { list, ...props } = Astro.props
     cursor: default;
 
     hr {
-      background: var(--c-text);
+      background: currentcolor;
       height: 1px;
       width: 100%;
     }
@@ -58,22 +58,21 @@ const { list, ...props } = Astro.props
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.75rem;
       color: var(--c-text);
 
       & > a {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
 
         h4 {
           font-size: 1.25rem;
           font-weight: 500;
-          position: relative;
         }
 
         p {
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-weight: 400;
         }
       }

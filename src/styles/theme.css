@@ -15,5 +15,6 @@
     --c-text-bland: #9f9f9f;
   }
 
+  --c-active: #39f;
   --c-primary: var(--c-text);
 }
