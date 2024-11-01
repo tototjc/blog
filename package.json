@@ -39,7 +39,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
-    "@eslint/compat": "^1.2.0",
+    "@eslint/compat": "^1.2.2",
     "astro": "^4.16.6",
     "astro-icon": "^1.1.1",
     "decap-cms": "^3.3.3",
