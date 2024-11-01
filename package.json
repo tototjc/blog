@@ -40,7 +40,7 @@
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@eslint/compat": "^1.2.0",
-    "astro": "^4.16.6",
+    "astro": "^4.16.8",
     "astro-icon": "^1.1.1",
     "decap-cms": "^3.3.3",
     "eslint": "^9.12.0",
