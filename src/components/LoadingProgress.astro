@@ -1,0 +1,40 @@
+<page-loading-progress></page-loading-progress>
+
+<style>
+  page-loading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 0.15rem;
+    z-index: calc(infinity * 1);
+    background: var(--c-text);
+    pointer-events: none;
+    transform: translateX(-100%);
+    animation: 1.5s ease-in-out 0.5s infinite loading;
+  }
+
+  @keyframes loading {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(100%);
+    }
+  }
+</style>
+
+<script>
+  customElements.define(
+    'page-loading-progress',
+    class extends HTMLElement {
+      constructor() {
+        super()
+        this.hidden = true
+        document.addEventListener('astro:before-preparation', () => (this.hidden = false))
+        document.addEventListener('astro:after-preparation', () => (this.hidden = true))
+      }
+    },
+  )
+</script>

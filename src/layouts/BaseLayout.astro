@@ -2,6 +2,7 @@
 import { ViewTransitions } from 'astro:transitions'
 
 import BaseHead from '@/components/BaseHead.astro'
+import LoadingProgress from '@/components/LoadingProgress.astro'
 import NavBar from '@/components/NavBar.astro'
 import FooterInfo from '@/components/FooterInfo.astro'
 
@@ -27,6 +28,7 @@ const {
     <ViewTransitions />
   </head>
   <body>
+    <LoadingProgress />
     <header>
       <NavBar />
     </header>
@@ -42,10 +44,12 @@ const {
 <style>
   html {
     scroll-behavior: smooth;
-    scrollbar-gutter: stable both-edges;
     overflow-anchor: auto;
+    overflow: hidden auto;
 
     body {
+      width: 100vw;
+      position: absolute;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
       background: var(--c-bg);
       direction: ltr;
@@ -58,19 +62,19 @@ const {
       -webkit-tap-highlight-color: transparent;
 
       & > header {
+        margin: 0 auto;
+        max-width: 50rem;
         position: sticky;
         top: 0;
         z-index: 1;
-        max-width: 50rem;
-        margin: 0 auto;
         background: var(--c-bg);
       }
 
       & > main {
         margin: 0 auto;
         max-width: 45rem;
-        padding: 1rem;
         min-height: 75vh;
+        padding: 1rem;
       }
 
       & > footer {
