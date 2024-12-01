@@ -1,8 +1,8 @@
 ---
 import type { ComponentProps } from 'astro/types'
-import ArticleHeader from '@/components/ArticleHeader.astro'
 
 import BaseLayout from './BaseLayout.astro'
+import ArticleHeader from '@/components/ArticleHeader.astro'
 
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
@@ -15,11 +15,13 @@ interface Props extends ComponentProps<typeof BaseLayout> {
   words?: number
 }
 
-const { title, category, pubDate, updDate, words, ...props } = Astro.props
+const { props } = Astro
+
+const titleId = '_top'
 ---
 
 <BaseLayout {...props}>
-  <ArticleHeader id="_top" {...{ title, category, pubDate, updDate, words }} />
+  <ArticleHeader id={titleId} {...props} />
   <article>
     <slot />
   </article>
