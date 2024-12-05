@@ -26,7 +26,7 @@ const { paginate, ...props } = Astro.props
   }
   {
     Array.from({ length: paginate.lastPage }, (_, i) => i + 1).map(page => (
-      <a class:list={['num', { active: page === paginate.currentPage }]} href={`/${page}`}>
+      <a class:list={['num', { active: page === paginate.currentPage }]} href={page.toString()}>
         {page}
       </a>
     ))
