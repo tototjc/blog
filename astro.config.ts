@@ -10,6 +10,11 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 
 export default defineConfig({
   site: process.env.SITE_URL ?? 'http://localhost:4321',
+  experimental: {
+    clientPrerender: true,
+    contentIntellisense: true,
+    responsiveImages: true,
+  },
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',
@@ -17,25 +22,14 @@ export default defineConfig({
   security: {
     checkOrigin: true,
   },
-  experimental: {
-    directRenderScript: true,
-    clientPrerender: true,
-    contentIntellisense: true,
-    contentLayer: true,
-    env: {
-      schema: {
-        CONTENT_GH_REPO: envField.string({ context: 'client', access: 'public' }),
-        CONTENT_GH_BRANCH: envField.string({ context: 'client', access: 'public', optional: true }),
-        GH_OAUTH_PROXY: envField.string({ context: 'client', access: 'public', optional: true }),
-      },
-    },
-  },
   image: {
     remotePatterns: [
       {
         protocol: 'https',
       },
     ],
+    experimentalLayout: 'full-width',
+    experimentalObjectFit: 'contain',
   },
   markdown: {
     remarkPlugins: [remarkMath],
@@ -64,6 +58,14 @@ export default defineConfig({
   i18n: {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans'],
+  },
+  env: {
+    schema: {
+      CONTENT_GH_REPO: envField.string({ context: 'client', access: 'public' }),
+      CONTENT_GH_BRANCH: envField.string({ context: 'client', access: 'public', optional: true }),
+      GH_OAUTH_PROXY: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+    validateSecrets: true,
   },
   vite: {
     build: {

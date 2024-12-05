@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 
 import BaseHead from '@/components/BaseHead.astro'
 import LoadingProgress from '@/components/LoadingProgress.astro'
@@ -25,7 +25,7 @@ const {
 <html lang={currentLocale}>
   <head>
     <BaseHead title={title && `${title} | ${SITE_TITLE}`} description={description} />
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <LoadingProgress />
