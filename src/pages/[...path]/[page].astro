@@ -11,6 +11,9 @@ import PageNum from '@/components/PageNum.astro'
 
 import { SITE_TITLE } from '@/consts'
 
+type Params = InferGetStaticParamsType<typeof getStaticPaths>
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
 export const getStaticPaths = (async ({ paginate }) => {
   const getPostList = (posts: Posts) =>
     posts.map(entry => ({
@@ -32,9 +35,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 
   return [...allPostsPages, ...groupedPostsPages]
 }) satisfies GetStaticPaths
-
-type Params = InferGetStaticParamsType<typeof getStaticPaths>
-type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { path } = Astro.params as Params
 const { page } = Astro.props

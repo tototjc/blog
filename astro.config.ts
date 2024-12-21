@@ -19,9 +19,6 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'viewport',
   },
-  security: {
-    checkOrigin: true,
-  },
   image: {
     remotePatterns: [
       {
