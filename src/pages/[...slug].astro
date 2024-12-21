@@ -1,18 +1,18 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content'
-import { render } from 'astro:content'
-import ArticleLayout from '@/layouts/ArticleLayout.astro'
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
+import { getCollection, render } from 'astro:content'
+
 import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
 
-export const getStaticPaths = async () =>
+import ArticleLayout from '@/layouts/ArticleLayout.astro'
+
+export const getStaticPaths = (async () =>
   (await getCollection('blog')).map(entry => ({
     params: { slug: entry.id },
     props: { entry },
-  }))
+  }))) satisfies GetStaticPaths
 
-interface Props {
-  entry: CollectionEntry<'blog'>
-}
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { entry } = Astro.props
 

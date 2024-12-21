@@ -1,41 +1,20 @@
 ---
-import { getCollection } from 'astro:content'
+import { groupedPosts } from '@/utils/getPosts'
 
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import ArticleHeader from '@/components/ArticleHeader.astro'
-
-const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
-
-const groupedPosts = new Map([
-  [
-    'archive',
-    Map.groupBy(
-      allPosts.sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf()),
-      post => post.data.pubDate?.getFullYear().toString() ?? 'others',
-    ),
-  ],
-  [
-    'category',
-    Map.groupBy(
-      allPosts.sort((a, b) =>
-        (a.data.category ?? '').localeCompare(b.data.category ?? '', 'zh-Hans-CN', { sensitivity: 'accent' }),
-      ),
-      post => post.data.category ?? 'others',
-    ),
-  ],
-])
 ---
 
-<BaseLayout title="Collection">
-  <ArticleHeader title="Collection" />
+<BaseLayout title="Collections">
+  <ArticleHeader title="Collections" />
   {
-    Array.from(groupedPosts, ([sort, group]) => (
+    Array.from(groupedPosts, ([collection, group]) => (
       <section>
-        <h2>{sort}</h2>
+        <h2>{collection}</h2>
         <ul>
           {Array.from(group, ([label, posts]) => (
             <li>
-              <a href={`/${sort}/${label}/1`}>
+              <a href={`/${collection}/${label}/1`}>
                 <span>{label}</span>
                 <i>﹝{posts.length}﹞</i>
               </a>

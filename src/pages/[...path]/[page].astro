@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType, InferGetStaticParamsType, GetStaticPaths } from 'astro'
-import { getCollection } from 'astro:content'
+
+import { sortedPosts, groupedPosts, type Posts } from '@/utils/getPosts'
 import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
 
 import BaseLayout from '@/layouts/BaseLayout.astro'
@@ -10,40 +11,33 @@ import PageNum from '@/components/PageNum.astro'
 
 import { SITE_TITLE } from '@/consts'
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>
-type Params = InferGetStaticParamsType<typeof getStaticPaths>
-
 export const getStaticPaths = (async ({ paginate }) => {
-  const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
+  const getPostList = (posts: Posts) =>
+    posts.map(entry => ({
+      link: entry.id,
+      ...entry.data,
+      summary: new MdAdditionalInfo(entry.body ?? '').getSummary(),
+    }))
 
-  const postList = allPosts
-    .map(entry => ({ link: entry.id, ...entry.data, summary: new MdAdditionalInfo(entry.body ?? '').getSummary() }))
-    .sort((a, b) => (b.pubDate ?? 0).valueOf() - (a.pubDate ?? 0).valueOf())
+  const allPostsPages = paginate(getPostList(sortedPosts), { pageSize: 5 })
 
-  const groupedPostList = new Map([
-    ['archive', Map.groupBy(postList, post => post.pubDate?.getFullYear().toString() ?? 'others')],
-    ['category', Map.groupBy(postList, post => post.category ?? 'others')],
-  ])
-
-  const allPages = paginate(postList, {
-    pageSize: 5,
-  })
-
-  const groupedPages = Array.from(groupedPostList, ([sort, group]) =>
+  const groupedPostsPages = Array.from(groupedPosts, ([collection, group]) =>
     Array.from(group, ([label, posts]) =>
-      paginate(posts, {
-        params: { path: `${sort}/${label}` },
+      paginate(getPostList(posts), {
+        params: { path: `${collection}/${label}` },
         pageSize: 5,
       }),
     ),
   ).flat(2)
 
-  return [...allPages, ...groupedPages]
+  return [...allPostsPages, ...groupedPostsPages]
 }) satisfies GetStaticPaths
 
-const { page } = Astro.props
+type Params = InferGetStaticParamsType<typeof getStaticPaths>
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { path } = Astro.params as Params
+const { page } = Astro.props
 ---
 
 <BaseLayout>
