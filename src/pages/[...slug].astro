@@ -18,17 +18,12 @@ const { entry } = Astro.props
 
 const { Content } = await render(entry)
 
-const { title, category, pubDate, updDate } = entry.data
-
 const info = new MdAdditionalInfo(entry.body ?? '')
 
 const articleProps = {
-  title,
   description: info.getSummary(),
+  ...entry.data,
   ...(entry.id.startsWith('post/') && {
-    category,
-    pubDate,
-    updDate,
     words: info.getReadingTime().words.total,
   }),
 }

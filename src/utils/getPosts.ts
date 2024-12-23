@@ -1,8 +1,11 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
 
-type Posts = CollectionEntry<'blog'>[]
+export type Posts = CollectionEntry<'blog'>[]
 
 const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
+
+const getSortedPosts = (posts: Posts) =>
+  posts.sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
 
 const getSortedGroup = (group: Map<string, Posts>) =>
   new Map(
@@ -11,17 +14,9 @@ const getSortedGroup = (group: Map<string, Posts>) =>
     ),
   )
 
-const sortedPosts = allPosts.sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
+export const sortedPosts = getSortedPosts(allPosts)
 
-const archiveGroup = getSortedGroup(
-  Map.groupBy(sortedPosts, post => post.data.pubDate?.getFullYear().toString() ?? 'others'),
-)
-
-const categoryGroup = getSortedGroup(Map.groupBy(sortedPosts, post => post.data.category ?? 'others'))
-
-const groupedPosts = new Map([
-  ['archive', archiveGroup],
-  ['category', categoryGroup],
+export const groupedPosts = new Map([
+  ['archive', Map.groupBy(sortedPosts, post => post.data.pubDate?.getFullYear().toString() ?? 'others')],
+  ['category', getSortedGroup(Map.groupBy(sortedPosts, post => post.data.category ?? 'others'))],
 ])
-
-export { sortedPosts, groupedPosts, type Posts }
