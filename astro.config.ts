@@ -1,5 +1,4 @@
 import { defineConfig, envField } from 'astro/config'
-import icon from 'astro-icon'
 import sitemap from '@astrojs/sitemap'
 
 import remarkMath from 'remark-math'
@@ -14,6 +13,9 @@ export default defineConfig({
     clientPrerender: true,
     contentIntellisense: true,
     responsiveImages: true,
+    svg: {
+      mode: 'inline',
+    },
   },
   prefetch: {
     prefetchAll: true,
@@ -42,7 +44,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    icon(),
     sitemap({
       i18n: {
         defaultLocale: 'zh_Hans',

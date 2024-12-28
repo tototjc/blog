@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components'
 import type { HTMLAttributes } from 'astro/types'
+import Close from './icons/close.svg'
 
 interface Props extends HTMLAttributes<'div'> {
   name: string
@@ -11,7 +11,7 @@ const { name, ...props } = Astro.props
 
 <div {...props}>
   <span>Showing: <strong>{name}</strong></span>
-  <a href="/"><Icon name="close" title="Close" /></a>
+  <a href="/"><Close class="icon" title="Close" /></a>
 </div>
 
 <style>

@@ -21,7 +21,7 @@ const { list, ...props } = Astro.props
 
 <ul {...props}>
   {
-    list.map(async ({ link, title, summary, category, pubDate }, index, arr) => (
+    list.map(({ link, title, summary, category, pubDate }, index, arr) => (
       <>
         <li>
           <a href={`/${link}`}>

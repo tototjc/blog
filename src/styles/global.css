@@ -25,3 +25,9 @@ a {
   background: var(--c-text-bland);
   color: #fff;
 }
+
+svg.icon {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}

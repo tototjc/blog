@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
-import { Icon } from 'astro-icon/components'
+import LeftArrow from './icons/left.svg'
+import RightArrow from './icons/right.svg'
 
 interface Props extends HTMLAttributes<'div'> {
   paginate: {
@@ -21,7 +22,7 @@ const { paginate, ...props } = Astro.props
   {
     paginate.url.prev && (
       <a href={paginate.url.prev}>
-        <Icon name="left" title="Previous" />
+        <LeftArrow class="icon" title="Previous" />
       </a>
     )
   }
@@ -45,7 +46,7 @@ const { paginate, ...props } = Astro.props
   {
     paginate.url.next && (
       <a href={paginate.url.next}>
-        <Icon name="right" title="Next" />
+        <RightArrow class="icon" title="Next" />
       </a>
     )
   }
