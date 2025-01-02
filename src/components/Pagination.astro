@@ -1,41 +1,35 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
+import type { Page } from 'astro'
+
 import LeftArrow from './icons/left.svg'
 import RightArrow from './icons/right.svg'
 
-interface Props extends HTMLAttributes<'div'> {
-  paginate: {
-    currentPage: number
-    lastPage: number
-    url: {
-      current?: string
-      prev?: string
-      next?: string
-    }
-  }
+interface Props extends HTMLAttributes<'nav'> {
+  page: Page
 }
 
-const { paginate, ...props } = Astro.props
+const { page, ...props } = Astro.props
 ---
 
-<div {...props}>
+<nav {...props}>
   {
-    paginate.url.prev && (
-      <a href={paginate.url.prev}>
+    page.url.prev && (
+      <a href={page.url.prev}>
         <LeftArrow class="icon" title="Previous" />
       </a>
     )
   }
   {
-    Array.from({ length: paginate.lastPage }, (_, i) => i + 1).map(page => (
+    Array.from({ length: page.lastPage }, (_, i) => i + 1).map(num => (
       <a
-        class:list={['num', { active: page === paginate.currentPage }]}
+        class:list={['num', { active: num === page.currentPage }]}
         href={
           '/' +
-          paginate.url.current
+          page.url.current
             ?.split('/')
             .filter(n => n)
-            .with(-1, String(page))
+            .with(-1, String(num))
             .join('/')
         }
       >
@@ -44,16 +38,16 @@ const { paginate, ...props } = Astro.props
     ))
   }
   {
-    paginate.url.next && (
-      <a href={paginate.url.next}>
+    page.url.next && (
+      <a href={page.url.next}>
         <RightArrow class="icon" title="Next" />
       </a>
     )
   }
-</div>
+</nav>
 
 <style>
-  div {
+  nav {
     display: flex;
     align-items: center;
     justify-content: center;

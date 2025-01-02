@@ -1,28 +1,26 @@
 ---
+import type { CollectionEntry } from 'astro:content'
 import type { ComponentProps } from 'astro/types'
 
-import BaseLayout from './BaseLayout.astro'
+import GeneralLayout from './General.astro'
 import ArticleHeader from '@/components/ArticleHeader.astro'
 
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
 
-interface Props extends ComponentProps<typeof BaseLayout> {
-  title: string
-  category?: string
-  pubDate?: Date
-  updDate?: Date
-  words?: number
-}
+type Props = ComponentProps<typeof GeneralLayout> &
+  CollectionEntry<'blog'>['data'] & {
+    words?: number
+  }
 
 const { props } = Astro
 
 const titleId = '_top'
 ---
 
-<BaseLayout {...props}>
+<GeneralLayout {...props}>
   <ArticleHeader id={titleId} {...props} />
   <article>
     <slot />
   </article>
-</BaseLayout>
+</GeneralLayout>

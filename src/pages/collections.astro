@@ -1,11 +1,11 @@
 ---
 import { groupedPosts } from '@/utils/getPosts'
 
-import BaseLayout from '@/layouts/BaseLayout.astro'
+import GeneralLayout from '@/layouts/General.astro'
 import ArticleHeader from '@/components/ArticleHeader.astro'
 ---
 
-<BaseLayout title="Collections">
+<GeneralLayout title="Collections">
   <ArticleHeader title="Collections" />
   {
     Array.from(groupedPosts, ([collection, group]) => (
@@ -24,7 +24,7 @@ import ArticleHeader from '@/components/ArticleHeader.astro'
       </section>
     ))
   }
-</BaseLayout>
+</GeneralLayout>
 
 <style>
   section {

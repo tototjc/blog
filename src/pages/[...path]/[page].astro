@@ -1,32 +1,19 @@
 ---
 import type { InferGetStaticPropsType, InferGetStaticParamsType, GetStaticPaths } from 'astro'
 
-import { sortedPosts, groupedPosts, type Posts } from '@/utils/getPosts'
-import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
+import { sortedPosts, groupedPosts } from '@/utils/getPosts'
 
-import BaseLayout from '@/layouts/BaseLayout.astro'
-import PostList from '@/components/PostList.astro'
-import PostFilterMsg from '@/components/PostFilterMsg.astro'
-import PageNum from '@/components/PageNum.astro'
-
-import { SITE_TITLE } from '@/consts'
+import PostsLayout from '@/layouts/Posts.astro'
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const getPostList = (posts: Posts) =>
-    posts.map(entry => ({
-      link: entry.id,
-      ...entry.data,
-      summary: new MdAdditionalInfo(entry.body ?? '').getSummary(),
-    }))
-
-  const allPostsPages = paginate(getPostList(sortedPosts), { pageSize: 5 })
+  const allPostsPages = paginate(sortedPosts, { pageSize: 5 })
 
   const groupedPostsPages = Array.from(groupedPosts, ([collection, group]) =>
     Array.from(group, ([label, posts]) =>
-      paginate(getPostList(posts), {
+      paginate(posts, {
         params: { path: `${collection}/${label}` },
         pageSize: 5,
       }),
@@ -40,33 +27,4 @@ const { path } = Astro.params as Params
 const { page } = Astro.props
 ---
 
-<BaseLayout>
-  <h1>{SITE_TITLE}</h1>
-  {path && <PostFilterMsg class="msg" name={path} />}
-  <PostList class="posts" list={page.data} />
-  <PageNum class="paginate" paginate={page} />
-</BaseLayout>
-
-<style>
-  h1 {
-    display: block;
-    text-align: center;
-    margin: 2rem 0;
-    color: var(--c-primary);
-    font-size: 1.8rem;
-    font-weight: 400;
-    cursor: default;
-  }
-
-  .msg {
-    margin: 1rem 0;
-  }
-
-  .posts {
-    min-height: 50vh;
-  }
-
-  .paginate {
-    margin-top: 2rem;
-  }
-</style>
+<PostsLayout path={path} page={page} />

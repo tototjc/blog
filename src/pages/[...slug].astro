@@ -4,7 +4,7 @@ import { getCollection, render } from 'astro:content'
 
 import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
 
-import ArticleLayout from '@/layouts/ArticleLayout.astro'
+import ArticleLayout from '@/layouts/Article.astro'
 
 export const getStaticPaths = (async () =>
   (await getCollection('blog')).map(entry => ({

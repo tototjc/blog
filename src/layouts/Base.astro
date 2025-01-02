@@ -1,14 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions'
 
-import BaseHead from '@/components/BaseHead.astro'
 import LoadingProgress from '@/components/LoadingProgress.astro'
-import NavBar from '@/components/NavBar.astro'
-import FooterInfo from '@/components/FooterInfo.astro'
 
 import '@/styles/global.css'
 
-import { SITE_TITLE } from '@/consts'
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts'
 
 interface Props {
   title?: string
@@ -16,7 +13,7 @@ interface Props {
 }
 
 const {
-  props: { title, description },
+  props: { title = SITE_TITLE, description = SITE_DESCRIPTION },
   currentLocale,
 } = Astro
 ---
@@ -24,20 +21,32 @@ const {
 <!doctype html>
 <html lang={currentLocale}>
   <head>
-    <BaseHead title={title && `${title} | ${SITE_TITLE}`} description={description} />
+    <title>{title}</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=auto" />
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="light dark" />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL('rss.xml', Astro.site)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <slot name="head" />
+
     <ClientRouter />
   </head>
   <body>
     <LoadingProgress />
-    <header>
-      <NavBar />
-    </header>
-    <main>
-      <slot />
-    </main>
-    <footer>
-      <FooterInfo />
-    </footer>
+    <slot />
   </body>
 </html>
 
@@ -60,28 +69,6 @@ const {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
-
-      & > header {
-        margin: 0 auto;
-        max-width: 50rem;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        background: var(--c-bg);
-      }
-
-      & > main {
-        margin: 0 auto;
-        max-width: 45rem;
-        min-height: 75vh;
-        padding: 1rem;
-      }
-
-      & > footer {
-        margin: 0 auto;
-        max-width: 45rem;
-        padding: 1rem;
-      }
     }
   }
 </style>
