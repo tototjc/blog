@@ -1,6 +1,5 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
-
 type Props = HTMLAttributes<'nav'>
 
 interface AnchorProps extends HTMLAttributes<'a'> {
@@ -24,10 +23,12 @@ const navList: AnchorProps[] = [
 
 <nav {...props}>
   {
-    navList.map(({ href, text, class: className, ...props }) => {
+    navList.map(async ({ href, text, icon, class: className, ...props }) => {
       const isActive = href === pathname || href === '/' + pathname.match(/[^/]+/g)?.[0]
+      const IconComponent = await import(`./icons/${icon}.svg`)
       return (
         <a href={href} class:list={[className, { active: isActive }]} {...props}>
+          <IconComponent.default class="icon" />
           <span>{text}</span>
         </a>
       )
