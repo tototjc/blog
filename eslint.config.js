@@ -1,7 +1,6 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginAstro from 'eslint-plugin-astro'
-import pluginMdx from 'eslint-plugin-mdx'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import globals from 'globals'
 
@@ -13,7 +12,7 @@ import { fileURLToPath } from 'node:url'
 export default [
   includeIgnoreFile(fileURLToPath(import.meta.resolve('./.gitignore'))),
   eslint.configs.recommended,
-  ...tseslint.config(...tseslint.configs.recommended, {
+  ...tseslint.config(tseslint.configs.recommended, {
     files: ['**/*.d.ts'],
     rules: {
       '@typescript-eslint/triple-slash-reference': 'off',
@@ -21,10 +20,7 @@ export default [
   }),
   ...pluginAstro.configs['flat/recommended'],
   {
-    ...pluginMdx.flat,
-    ...pluginMdx.flatCodeBlocks,
-  },
-  {
+    files: ['*.config.{js,ts}'],
     languageOptions: {
       globals: {
         ...globals.node,
