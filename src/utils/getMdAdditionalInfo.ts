@@ -1,5 +1,5 @@
-import fromMarkdown from 'mdast-util-from-markdown'
-import toString from 'mdast-util-to-string'
+import { fromMarkdown } from 'mdast-util-from-markdown'
+import { toString } from 'mdast-util-to-string'
 import readingTime, { type Options as ReadingTimeOptions } from 'reading-time'
 
 export default class MdAdditionalInfo {
@@ -9,7 +9,7 @@ export default class MdAdditionalInfo {
     this.plainText = toString(fromMarkdown(mdText))
   }
 
-  public getSummary(sliceLength = 100) {
+  public getSummary(sliceLength = 50) {
     return this.plainText.slice(0, sliceLength) + (this.plainText.length > sliceLength ? ' ...' : '')
   }
 

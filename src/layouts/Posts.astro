@@ -27,7 +27,7 @@ const postListData = page.data.map(entry => ({
 }))
 ---
 
-<GeneralLayout title={path ?? SITE_TITLE} {...props}>
+<GeneralLayout title={path} {...props}>
   <h1>{SITE_TITLE}</h1>
   {path && <PostFilterMsg class="msg" name={path} />}
   <PostList class="posts" list={postListData} />
