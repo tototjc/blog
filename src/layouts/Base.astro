@@ -52,6 +52,16 @@ const {
 
 <style>
   html {
+    accent-color: var(--c-primary);
+    direction: ltr;
+    font: normal 1rem/1.5 var(--font-default);
+    font-optical-sizing: auto;
+    interpolate-size: allow-keywords;
+    text-rendering: optimizelegibility;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     overflow-anchor: auto;
     overflow: hidden auto;
@@ -61,14 +71,6 @@ const {
       position: absolute;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
       background: var(--c-bg);
-      direction: ltr;
-      font: normal 1rem/1.5 var(--font-default);
-      font-optical-sizing: auto;
-      text-rendering: optimizelegibility;
-      text-size-adjust: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-tap-highlight-color: transparent;
     }
   }
 </style>

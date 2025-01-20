@@ -9,7 +9,7 @@ export default class MdAdditionalInfo {
     this.plainText = toString(fromMarkdown(mdText))
   }
 
-  public getSummary(sliceLength = 50) {
+  public getSummary(sliceLength = 75) {
     return this.plainText.slice(0, sliceLength) + (this.plainText.length > sliceLength ? ' ...' : '')
   }
 
