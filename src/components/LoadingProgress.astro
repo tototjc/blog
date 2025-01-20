@@ -1,17 +1,14 @@
 <page-loading-progress></page-loading-progress>
 
 <style>
-  page-loading-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+  :popover-open {
+    width: 100%;
     height: 0.15rem;
-    z-index: calc(infinity * 1);
+    border: none;
     background: var(--c-text);
-    pointer-events: none;
     transform: translateX(-100%);
     animation: 1.5s ease-in-out 0.5s infinite loading;
+    pointer-events: none;
   }
 
   @keyframes loading {
@@ -31,9 +28,9 @@
     class extends HTMLElement {
       constructor() {
         super()
-        this.hidden = true
-        document.addEventListener('astro:before-preparation', () => (this.hidden = false))
-        document.addEventListener('astro:after-preparation', () => (this.hidden = true))
+        this.popover = 'manual'
+        document.addEventListener('astro:before-preparation', this.showPopover.bind(this))
+        document.addEventListener('astro:after-preparation', this.hidePopover.bind(this))
       }
     },
   )
