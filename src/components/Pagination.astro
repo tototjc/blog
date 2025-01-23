@@ -23,7 +23,7 @@ const { page, ...props } = Astro.props
   {
     Array.from({ length: page.lastPage }, (_, i) => i + 1).map(num => (
       <a
-        class:list={['num', { active: num === page.currentPage }]}
+        class:list={[{ active: num === page.currentPage }]}
         href={
           '/' +
           page.url.current
@@ -49,8 +49,8 @@ const { page, ...props } = Astro.props
 <style>
   nav {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
+    place-content: center;
     gap: 0.5rem;
     color: var(--c-text);
     font-size: 1rem;
@@ -60,22 +60,21 @@ const { page, ...props } = Astro.props
       width: 1.5rem;
       height: 1.5rem;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      place-items: center;
+      place-content: center;
       border-radius: 0.2rem;
-      transition: 0.3s background ease-in-out;
+      transition: transform 0.2s ease-in-out;
 
-      &:hover {
-        background: var(--c-bg-mute);
+      svg {
+        stroke: currentcolor;
       }
 
       &.active {
-        transform: scale(1.2);
-        font-weight: 600;
+        background: var(--c-bg-mute);
       }
 
-      &.num:not(.active) {
-        color: var(--c-text-bland);
+      &:not(.active):hover {
+        transform: scale(1.2);
       }
     }
   }
