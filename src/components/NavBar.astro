@@ -1,89 +1,163 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
-type Props = HTMLAttributes<'nav'>
 
-interface AnchorProps extends HTMLAttributes<'a'> {
-  icon: string
+export type AnchorProps = HTMLAttributes<'a'> & {
   text: string
+  icon: string
+}
+
+interface Props extends HTMLAttributes<'div'> {
+  links: AnchorProps[]
 }
 
 const {
   url: { pathname },
-  props,
+  props: { links, ...props },
 } = Astro
-
-const navList: AnchorProps[] = [
-  { href: '/', text: 'Home', icon: 'home' },
-  { href: '/collections', text: 'Collections', icon: 'library' },
-  { href: '/about', text: 'About', icon: 'person' },
-  { href: '/blogroll', text: 'Blogroll', icon: 'link' },
-  { href: '/rss.xml', text: 'Feed', icon: 'rss', type: 'application/rss+xml', target: '_blank' },
-]
 ---
 
-<nav {...props}>
-  {
-    navList.map(async ({ href, text, icon, class: className, ...props }) => {
-      const isActive = href === pathname || href === '/' + pathname.match(/[^/]+/g)?.[0]
-      const IconComponent = await import(`./icons/${icon}.svg`)
-      return (
-        <a href={href} class:list={[className, { active: isActive }]} {...props}>
-          <IconComponent.default class="icon" />
-          <span>{text}</span>
-        </a>
-      )
-    })
-  }
-</nav>
+<div {...props}>
+  <label>
+    <input type="checkbox" hidden />
+    <svg viewBox="0 0 50 50">
+      <line x1="10" y1="15" x2="40" y2="15"></line>
+      <line x1="10" y1="25" x2="40" y2="25"></line>
+      <line x1="10" y1="25" x2="40" y2="25"></line>
+      <line x1="10" y1="35" x2="40" y2="35"></line>
+    </svg>
+  </label>
+  <nav>
+    {
+      links.map(async ({ href, text, icon, class: className, ...props }) => {
+        const isActive = href === pathname || href === '/' + pathname.match(/[^/]+/g)?.[0]
+        const IconComponent = await import(`./icons/${icon}.svg`)
+        return (
+          <a href={href} class:list={[className, { active: isActive }]} {...props}>
+            <IconComponent.default class="icon" />
+            <span>{text}</span>
+          </a>
+        )
+      })
+    }
+  </nav>
+</div>
 
 <style>
+  div {
+    color: var(--c-text);
+  }
+
+  label {
+    display: flex;
+    place-items: center;
+    place-content: center;
+
+    svg {
+      width: 3rem;
+      height: auto;
+      stroke: currentcolor;
+      stroke-width: 0.15rem;
+      stroke-linecap: round;
+
+      line {
+        transform-origin: center;
+        transition: 0.2s ease-in-out;
+      }
+
+      input:checked + & line {
+        &:nth-of-type(1),
+        &:nth-of-type(4) {
+          opacity: 0;
+        }
+
+        &:nth-of-type(2) {
+          transform: rotate(45deg);
+        }
+
+        &:nth-of-type(3) {
+          transform: rotate(-45deg);
+        }
+      }
+    }
+  }
+
   nav {
     display: flex;
-    place-content: center;
 
     a {
       position: relative;
-      flex: 1 1 auto;
       padding: 0.75rem;
-      display: flex;
-      gap: 0.1rem 0.25rem;
-      flex-wrap: wrap;
+      display: inline flex;
       place-content: center;
       place-items: center;
-      color: var(--c-text-bland);
       font-size: 1.2rem;
+      gap: 0.25rem;
       font-weight: 400;
-      text-decoration: none;
+      overflow: hidden;
+    }
+  }
 
-      &.active {
-        font-weight: 500;
-        color: var(--c-primary);
+  @media (width >= 768px) {
+    label {
+      display: none;
+    }
 
-        svg {
-          stroke: currentcolor;
-          stroke-width: 0.02rem;
+    nav {
+      flex-wrap: wrap;
+      place-content: end;
+
+      a {
+        &::after {
+          content: '';
+          position: absolute;
+          background: var(--c-text);
+          bottom: 0;
+          left: 100%;
+          width: 0;
+          height: 1.5px;
+          transition: all 0.2s linear;
+        }
+
+        &:hover::after {
+          left: 0;
+          width: 100%;
+          transition-delay: 0.1s;
+        }
+
+        &:hover ~ *::after {
+          left: 0;
         }
       }
+    }
+  }
 
-      &::after {
+  @media (width < 768px) {
+    nav {
+      position: fixed;
+      inset: 0;
+      background: var(--c-bg);
+      flex-direction: column;
+      place-content: center;
+      gap: 1rem;
+      transition: transform 0.2s ease-in-out;
+      z-index: -1;
+
+      label:not(:has(input:checked)) + & {
+        transform: translateY(-100%);
+      }
+
+      a:hover::before {
         content: '';
+        inset: 0;
         position: absolute;
-        background: var(--c-text);
-        bottom: 0;
-        left: 100%;
-        width: 0;
-        height: 1.5px;
-        transition: all 0.2s linear;
-      }
+        background: radial-gradient(circle, var(--c-bg-mute), transparent 15%);
+        transition: transform 0.3s ease-in-out;
+        transform: scale(10);
+        z-index: -1;
 
-      &:hover::after {
-        left: 0;
-        width: 100%;
-        transition-delay: 0.1s;
-      }
-
-      &:hover ~ *::after {
-        left: 0;
+        @starting-style {
+          transform: scale(0);
+        }
       }
     }
   }

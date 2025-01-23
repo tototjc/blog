@@ -3,6 +3,7 @@ import type { ComponentProps } from 'astro/types'
 
 import BaseLayout from './Base.astro'
 
+import Logo from '@/components/Logo.astro'
 import NavBar from '@/components/NavBar.astro'
 import FooterInfo from '@/components/FooterInfo.astro'
 
@@ -11,11 +12,19 @@ import { SITE_TITLE } from '@/consts'
 type Props = ComponentProps<typeof BaseLayout>
 
 const { title, ...props } = Astro.props
+
+const navLinks = [
+  { href: '/collections', text: 'Collections', icon: 'library' },
+  { href: '/about', text: 'About', icon: 'person' },
+  { href: '/blogroll', text: 'Blogroll', icon: 'link' },
+  { href: '/rss.xml', text: 'Feed', icon: 'rss', type: 'application/rss+xml', target: '_blank' },
+]
 ---
 
 <BaseLayout title={title && `${title} | ${SITE_TITLE}`} {...props}>
   <header>
-    <NavBar />
+    <Logo logo={SITE_TITLE} />
+    <NavBar links={navLinks} />
   </header>
   <main>
     <slot />
@@ -31,20 +40,24 @@ const { title, ...props } = Astro.props
     max-width: 50rem;
     position: sticky;
     top: 0;
-    z-index: 1;
     background: var(--c-bg);
+    display: flex;
+    place-items: center;
+    place-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   main {
     margin: 0 auto;
-    max-width: 45rem;
+    max-width: 50rem;
     min-height: 75vh;
     padding: 1rem;
   }
 
   footer {
     margin: 0 auto;
-    max-width: 45rem;
+    max-width: 50rem;
     padding: 1rem;
   }
 </style>
