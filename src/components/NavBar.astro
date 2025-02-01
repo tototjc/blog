@@ -28,12 +28,12 @@ const {
   </label>
   <nav>
     {
-      links.map(async ({ href, text, icon, class: className, ...props }) => {
+      links.map(async ({ href, class: className, text, icon, ...props }) => {
         const isActive = href === pathname || href === '/' + pathname.match(/[^/]+/g)?.[0]
         const IconComponent = await import(`./icons/${icon}.svg`)
         return (
           <a href={href} class:list={[className, { active: isActive }]} {...props}>
-            <IconComponent.default class="icon" />
+            <IconComponent.default class="icon" title={text} />
             <span>{text}</span>
           </a>
         )
