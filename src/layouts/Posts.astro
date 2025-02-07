@@ -19,7 +19,7 @@ type Props = ComponentProps<typeof GeneralLayout> & {
 const { page, path, ...props } = Astro.props
 
 const postListData = page.data.map(entry => ({
-  link: entry.id,
+  link: `/${entry.id}`,
   ...entry.data,
   summary: new MdAdditionalInfo(entry.body ?? '').getSummary(),
 }))
