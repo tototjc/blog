@@ -1,32 +1,31 @@
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType, InferGetStaticParamsType } from 'astro'
+import { experimental_AstroContainer } from 'astro/container'
 import { createIndex } from 'pagefind'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { toString } from 'mdast-util-to-string'
-
 import mime from 'mime'
 
 import { allPosts } from '@/utils/getPosts'
 
-const { index, errors: createErrors } = await createIndex()
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Page from '@/pages/[...slug].astro'
+
+const { index, errors: createErrors } = await createIndex({
+  forceLanguage: 'zh',
+})
 
 if (!index) {
   throw new Error(createErrors.join('\n'))
 }
 
-for (const post of allPosts) {
-  await index.addCustomRecord({
-    url: post.id,
-    content: toString(fromMarkdown(post.body ?? '')),
-    language: 'zh',
-    meta: {
-      title: post.data.title,
-    },
-    filters: {
-      category: [post.data.category ?? 'others'],
-    },
-    sort: {
-      date: (post.data.pubDate ?? 0).valueOf().toFixed(),
-    },
+const container = await experimental_AstroContainer.create()
+
+for (const entry of allPosts) {
+  await index.addHTMLFile({
+    url: entry.id,
+    content: await container.renderToString(Page, {
+      params: { slug: entry.id },
+      props: { entry },
+    }),
   })
 }
 
