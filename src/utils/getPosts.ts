@@ -2,8 +2,6 @@ import { getCollection, type CollectionEntry } from 'astro:content'
 
 export type Posts = CollectionEntry<'blog'>[]
 
-const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
-
 const getSortedPosts = (posts: Posts) =>
   posts.sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
 
@@ -13,6 +11,8 @@ const getSortedGroup = (group: Map<string, Posts>) =>
       String(a).localeCompare(String(b), 'zh-Hans-CN', { sensitivity: 'accent' }),
     ),
   )
+
+export const allPosts = await getCollection('blog', ({ id }) => id.startsWith('post/'))
 
 export const sortedPosts = getSortedPosts(allPosts)
 
