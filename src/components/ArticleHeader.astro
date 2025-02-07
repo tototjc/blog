@@ -16,12 +16,12 @@ const { title, category, pubDate, updDate, words, ...props } = Astro.props
 ---
 
 <header {...props}>
-  <h1>{title}</h1>
+  <h1 data-pagefind-meta="title">{title}</h1>
   {
     category && (
       <div class="category">
         <span>
-          「 <FormattedCategory category={category} /> 」
+          「 <FormattedCategory category={category} data-pagefind-filter="category" /> 」
         </span>
       </div>
     )
@@ -32,12 +32,12 @@ const { title, category, pubDate, updDate, words, ...props } = Astro.props
         <div>
           {pubDate && (
             <span>
-              Publish: <FormattedDate date={pubDate} />
+              Publish: <FormattedDate date={pubDate} data-pagefind-sort="pubdate[datetime]" />
             </span>
           )}
           {updDate && (
             <span>
-              Update: <FormattedDate date={updDate} />
+              Update: <FormattedDate date={updDate} data-pagefind-sort="upddate[datetime]" />
             </span>
           )}
         </div>
