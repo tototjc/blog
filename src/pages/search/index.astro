@@ -1,0 +1,67 @@
+---
+import GeneralLayout from '@/layouts/General.astro'
+
+import SearchIcon from '@/components/icons/search.svg'
+---
+
+<GeneralLayout title="Search">
+  <div>
+    <label>
+      <SearchIcon class="icon" />
+      <input placeholder="Search" type="text" autocomplete="off" />
+    </label>
+  </div>
+</GeneralLayout>
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem;
+
+    label {
+      display: flex;
+      place-items: center;
+      place-content: start;
+      gap: 1rem;
+      color: var(--c-text);
+      font-size: 1.1rem;
+      border-bottom: 0.1rem solid currentcolor;
+      padding: 0.75rem 1rem;
+      overflow: hidden;
+
+      svg {
+        flex: 0 0 auto;
+        stroke: currentcolor;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      input {
+        flex: 1 1 auto;
+        border: none;
+        outline: none;
+        background: none;
+        color: currentcolor;
+        font: inherit;
+
+        &::placeholder {
+          color: var(--c-text-bland);
+        }
+
+        &:focus::placeholder {
+          visibility: hidden;
+        }
+      }
+
+      &:focus-within {
+        outline: auto;
+        border-radius: 0.5rem;
+
+        svg {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+</style>
