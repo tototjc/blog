@@ -2,23 +2,46 @@
 import GeneralLayout from '@/layouts/General.astro'
 
 import SearchIcon from '@/components/icons/search.svg'
+
+import '@pagefind/modular-ui/css/ui.css'
 ---
 
 <GeneralLayout title="Search">
   <div>
     <label>
       <SearchIcon class="icon" />
-      <input placeholder="Search" type="text" autocomplete="off" />
+      <input id="search" placeholder="Search" type="text" autocomplete="off" />
     </label>
+    <ul id="results"></ul>
   </div>
 </GeneralLayout>
+
+<script>
+  import { Instance, Input, ResultList } from '@pagefind/modular-ui'
+
+  const instance = new Instance({ bundlePath: '/search/' })
+
+  instance.add(new Input({ inputElement: '#search' }))
+
+  instance.add(
+    new ResultList({
+      containerElement: '#results',
+      placeholderTemplate: null,
+      resultTemplate: ({ url, meta: { title }, excerpt }: never) => {
+        const elem = document.createElement('li')
+        elem.innerHTML = `<a href="${url}"><h4>${title}</h4><p>${excerpt}</p></a>`
+        return elem
+      },
+    }),
+  )
+</script>
 
 <style>
   div {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    margin: 2rem;
+    gap: 1.5rem;
+    margin: 1.5rem;
 
     label {
       display: flex;
@@ -61,6 +84,35 @@ import SearchIcon from '@/components/icons/search.svg'
         svg {
           transform: scale(1.2);
         }
+      }
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      color: var(--c-text);
+      padding: 0.5rem;
+      overflow: auto;
+
+      :global(li h4) {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      :global(li p) {
+        font-size: 1rem;
+        font-weight: 400;
+        border-inline-start: 0.2em solid var(--c-text-bland);
+        padding-inline-start: 0.5em;
+      }
+
+      :global(li p mark) {
+        color: currentcolor;
+        background: #ee8;
+        text-decoration: underline wavy currentcolor 0.1rem;
+        text-underline-offset: 0.15rem;
       }
     }
   }

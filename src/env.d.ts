@@ -3,3 +3,4 @@
 
 declare module 'decap-cms-locales'
 declare module 'mime'
+declare module '@pagefind/modular-ui'
