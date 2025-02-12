@@ -10,7 +10,6 @@
     <script>
       import config from './config'
       import CMS from 'decap-cms-app'
-      import { zh_Hans } from 'decap-cms-locales'
       import React from 'react'
       import globalStyle from '@/styles/global.css?url'
       import mdStyle from '@/styles/markdown.css?url'
@@ -18,7 +17,6 @@
       CMS.registerPreviewStyle(mdStyle)
       CMS.registerPreviewTemplate('posts', props => React.createElement('article', null, props.widgetFor('body')))
       CMS.registerPreviewTemplate('pages', props => React.createElement('article', null, props.widgetFor('body')))
-      CMS.registerLocale('zh_Hans', zh_Hans)
       CMS.init({ config })
     </script>
   </body>

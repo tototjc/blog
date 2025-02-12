@@ -13,6 +13,7 @@ export default defineConfig({
     clientPrerender: true,
     contentIntellisense: true,
     responsiveImages: true,
+    serializeConfig: true,
     svg: {
       mode: 'inline',
     },
