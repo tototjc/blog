@@ -1,23 +1,21 @@
-<!doctype html>
-<html lang="zh-Hans">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=auto" />
-    <meta name="robots" content="noindex" />
-    <title>Decap CMS</title>
-  </head>
-  <body>
-    <script>
-      import config from './config'
-      import CMS from 'decap-cms-app'
-      import React from 'react'
-      import globalStyle from '@/styles/global.css?url'
-      import mdStyle from '@/styles/markdown.css?url'
-      CMS.registerPreviewStyle(globalStyle)
-      CMS.registerPreviewStyle(mdStyle)
-      CMS.registerPreviewTemplate('posts', props => React.createElement('article', null, props.widgetFor('body')))
-      CMS.registerPreviewTemplate('pages', props => React.createElement('article', null, props.widgetFor('body')))
-      CMS.init({ config })
-    </script>
-  </body>
-</html>
+---
+import BaseLayout from '@/layouts/Base.astro'
+---
+
+<BaseLayout title="CMS">
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+  <div id="nc-root"></div>
+</BaseLayout>
+
+<script>
+  import config from './config'
+  import CMS from 'decap-cms-app'
+  import React from 'react'
+  import globalStyle from '@/styles/global.css?url'
+  import mdStyle from '@/styles/markdown.css?url'
+  CMS.registerPreviewStyle(globalStyle)
+  CMS.registerPreviewStyle(mdStyle)
+  CMS.registerPreviewTemplate('posts', props => React.createElement('article', null, props.widgetFor('body')))
+  CMS.registerPreviewTemplate('pages', props => React.createElement('article', null, props.widgetFor('body')))
+  CMS.init({ config })
+</script>
