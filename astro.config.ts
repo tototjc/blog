@@ -47,18 +47,8 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: page => !new URL(page).pathname.startsWith('/admin'),
-      i18n: {
-        defaultLocale: 'zh_Hans',
-        locales: {
-          zh_Hans: 'zh-Hans',
-        },
-      },
     }),
   ],
-  i18n: {
-    defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
-  },
   env: {
     schema: {
       CONTENT_GH_REPO: envField.string({ context: 'client', access: 'public' }),
