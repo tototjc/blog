@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from 'astro/types'
+import config from 'virtual:config'
 
 import BaseLayout from './Base.astro'
 
@@ -7,25 +8,15 @@ import Logo from '@/components/Logo.astro'
 import NavBar from '@/components/NavBar.astro'
 import FooterInfo from '@/components/FooterInfo.astro'
 
-import { SITE_TITLE } from '@/consts'
-
 type Props = ComponentProps<typeof BaseLayout>
 
 const { title, ...props } = Astro.props
-
-const navLinks = [
-  { href: '/collections', text: 'Collections', icon: 'library' },
-  { href: '/about', text: 'About', icon: 'person' },
-  { href: '/blogroll', text: 'Blogroll', icon: 'link' },
-  { href: '/search', text: 'Search', icon: 'search' },
-  { href: '/rss.xml', text: 'Feed', icon: 'rss', type: 'application/rss+xml', target: '_blank' },
-]
 ---
 
-<BaseLayout title={title && `${title} | ${SITE_TITLE}`} {...props}>
+<BaseLayout title={title && `${title} | ${config.title}`} {...props}>
   <header>
-    <Logo logo={SITE_TITLE} />
-    <NavBar links={navLinks} />
+    <Logo logo={config.title} />
+    <NavBar links={config.nav} />
   </header>
   <main>
     <slot />

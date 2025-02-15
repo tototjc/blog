@@ -1,19 +1,14 @@
 import type { CmsConfig } from 'decap-cms-core'
-import { CONTENT_GH_REPO, CONTENT_GH_BRANCH, GH_OAUTH_PROXY } from 'astro:env/client'
+import config from 'virtual:config'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import { i18n, site } from 'astro:config/client'
 
 export default {
   load_config_file: false,
-  locale: 'zh_Hans',
   site_url: site,
-  backend: {
-    name: 'github',
-    repo: CONTENT_GH_REPO,
-    branch: CONTENT_GH_BRANCH,
-    base_url: GH_OAUTH_PROXY,
-  },
+  locale: config.cms.locale,
+  backend: config.cms.backend,
   media_folder: 'assets',
   i18n: i18n && {
     structure: 'multiple_folders',

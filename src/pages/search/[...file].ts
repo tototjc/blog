@@ -3,15 +3,15 @@ import { experimental_AstroContainer } from 'astro/container'
 import { createIndex } from 'pagefind'
 import mime from 'mime'
 
+import config from 'virtual:config'
+
 import { allPosts } from '@/utils/getPosts'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Page from '@/pages/[...slug].astro'
 
-const { index, errors: createErrors } = await createIndex({
-  forceLanguage: 'zh',
-})
+const { index, errors: createErrors } = await createIndex(config.search)
 
 if (!index) {
   throw new Error(createErrors.join('\n'))

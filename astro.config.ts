@@ -1,9 +1,12 @@
-import { defineConfig, envField } from 'astro/config'
+import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeExternalLinks from 'rehype-external-links'
+
+import { vitePluginSiteConfig } from './src/plugins/virtual-site-config'
+import siteConfig from './src/site.config'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -49,14 +52,6 @@ export default defineConfig({
       filter: page => !new URL(page).pathname.startsWith('/admin'),
     }),
   ],
-  env: {
-    schema: {
-      CONTENT_GH_REPO: envField.string({ context: 'client', access: 'public' }),
-      CONTENT_GH_BRANCH: envField.string({ context: 'client', access: 'public', optional: true }),
-      GH_OAUTH_PROXY: envField.string({ context: 'client', access: 'public', optional: true }),
-    },
-    validateSecrets: true,
-  },
   vite: {
     build: {
       sourcemap: isDevelopment,
@@ -72,5 +67,6 @@ export default defineConfig({
     ssr: {
       noExternal: ['katex'],
     },
+    plugins: [vitePluginSiteConfig(siteConfig)],
   },
 })
