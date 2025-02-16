@@ -5,6 +5,7 @@ const config = {
     name: 'Gaaising Tam',
     url: 'https://github.com/tototjc',
   },
+  beian: '粤ICP备2025369000号',
   postlist: {
     pageSize: 5,
     summaryLength: 75,
