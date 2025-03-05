@@ -5,7 +5,7 @@ import mime from 'mime'
 
 import config from 'virtual:config'
 
-import { allPosts } from '@/utils/getPosts'
+import { posts } from '@/utils/getContents'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -19,7 +19,7 @@ if (!index) {
 
 const container = await experimental_AstroContainer.create()
 
-for (const entry of allPosts) {
+for (const entry of posts) {
   await index.addHTMLFile({
     url: entry.id,
     content: await container.renderToString(Page, {

@@ -1,6 +1,7 @@
 ---
-import type { CollectionEntry } from 'astro:content'
 import type { ComponentProps } from 'astro/types'
+
+import type { Post } from '@/utils/getContents'
 
 import GeneralLayout from './General.astro'
 import ArticleHeader from '@/components/ArticleHeader.astro'
@@ -8,18 +9,17 @@ import ArticleHeader from '@/components/ArticleHeader.astro'
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
 
-type Props = ComponentProps<typeof GeneralLayout> &
-  CollectionEntry<'blog'>['data'] & {
-    words?: number
-  }
+type Props = ComponentProps<typeof GeneralLayout> & Post['data']
 
-const { props } = Astro
+const { title, description, category, pubDate, updDate, readingTime } = Astro.props
+
+const headerProps = { title, category, pubDate, updDate, words: readingTime?.words.total }
 
 const titleId = '_top'
 ---
 
-<GeneralLayout {...props}>
-  <ArticleHeader id={titleId} {...props} />
+<GeneralLayout {title} {description}>
+  <ArticleHeader id={titleId} {...headerProps} />
   <article data-pagefind-body>
     <slot />
   </article>

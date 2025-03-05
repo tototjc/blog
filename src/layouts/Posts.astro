@@ -2,9 +2,6 @@
 import type { CollectionEntry } from 'astro:content'
 import type { ComponentProps } from 'astro/types'
 import type { Page } from 'astro'
-import config from 'virtual:config'
-
-import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
 
 import GeneralLayout from './General.astro'
 
@@ -20,9 +17,8 @@ type Props = ComponentProps<typeof GeneralLayout> & {
 const { page, path, ...props } = Astro.props
 
 const postListData = page.data.map(entry => ({
-  ...entry.data,
   link: `/${entry.id}`,
-  description: new MdAdditionalInfo(entry.body ?? '').getSummary(config.postlist.summaryLength),
+  ...entry.data,
 }))
 ---
 

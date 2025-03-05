@@ -1,5 +1,5 @@
 ---
-import { groupedPosts } from '@/utils/getPosts'
+import { groups } from '@/utils/getContents'
 
 import GeneralLayout from '@/layouts/General.astro'
 import ArticleHeader from '@/components/ArticleHeader.astro'
@@ -8,15 +8,15 @@ import ArticleHeader from '@/components/ArticleHeader.astro'
 <GeneralLayout title="Collections">
   <ArticleHeader title="Collections" />
   {
-    Array.from(groupedPosts, ([collection, group]) => (
+    groups.map(({ path: groupPath, title, group }) => (
       <section>
-        <h2>{collection}</h2>
+        <h2>{title}</h2>
         <ul>
-          {Array.from(group, ([label, posts]) => (
+          {group.map(({ path: collectionPath, title, collection }) => (
             <li>
-              <a href={`/${collection}/${label}/1`}>
-                <span>{label}</span>
-                <i>﹝{posts.length}﹞</i>
+              <a href={`/${groupPath}/${collectionPath}/1`}>
+                <span>{title}</span>
+                <i>﹝{collection.length}﹞</i>
               </a>
             </li>
           ))}

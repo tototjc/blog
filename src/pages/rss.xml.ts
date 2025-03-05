@@ -3,18 +3,13 @@ import rss from '@astrojs/rss'
 
 import config from 'virtual:config'
 
-import { sortedPosts } from '@/utils/getPosts'
-import MdAdditionalInfo from '@/utils/getMdAdditionalInfo'
+import { posts } from '@/utils/getContents'
 
 export const GET: APIRoute = async context =>
   rss({
     title: config.title,
     description: config.description,
     site: context.site ?? '',
-    items: sortedPosts.map(entry => ({
-      ...entry.data,
-      link: entry.id,
-      description: new MdAdditionalInfo(entry.body ?? '').getSummary(config.postlist.summaryLength),
-    })),
+    items: posts.map(entry => ({ link: entry.id, ...entry.data })),
     stylesheet: '/rss/styles.xsl',
   })
