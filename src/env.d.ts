@@ -6,5 +6,4 @@ declare module 'virtual:config' {
   export default Config
 }
 
-declare module 'mime'
 declare module '@pagefind/modular-ui'

@@ -43,7 +43,7 @@ export const GET: APIRoute<Props, Params> = async ({ params }) => {
   } else {
     return new Response(file.content, {
       headers: {
-        'Content-Type': mime.getType(file.path),
+        'Content-Type': mime.getType(file.path) ?? '',
       },
     })
   }
