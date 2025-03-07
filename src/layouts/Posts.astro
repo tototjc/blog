@@ -5,16 +5,16 @@ import type { Page } from 'astro'
 
 import GeneralLayout from './General.astro'
 
+import ArticleHeader from '@/components/ArticleHeader.astro'
 import PostList from '@/components/PostList.astro'
-import PostFilterMsg from '@/components/PostFilterMsg.astro'
 import Pagination from '@/components/Pagination.astro'
 
 type Props = ComponentProps<typeof GeneralLayout> & {
-  path?: string
   page: Page<CollectionEntry<'blog'>>
+  filterLabel?: string[]
 }
 
-const { page, path, ...props } = Astro.props
+const { page, filterLabel, ...props } = Astro.props
 
 const postListData = page.data.map(entry => ({
   link: `/${entry.id}`,
@@ -22,8 +22,8 @@ const postListData = page.data.map(entry => ({
 }))
 ---
 
-<GeneralLayout title={path} {...props}>
-  {path && <PostFilterMsg class="msg" name={path} />}
+<GeneralLayout title={filterLabel?.toReversed().join(' | ')} {...props}>
+  {filterLabel && <ArticleHeader title={filterLabel.join(' - ')} />}
   <PostList class="posts" list={postListData} />
   <Pagination class="paginate" page={page} />
 </GeneralLayout>

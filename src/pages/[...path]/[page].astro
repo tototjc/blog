@@ -1,5 +1,5 @@
 ---
-import type { InferGetStaticPropsType, InferGetStaticParamsType, GetStaticPaths } from 'astro'
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
 
 import config from 'virtual:config'
 
@@ -7,23 +7,26 @@ import { posts, groups } from '@/utils/getContents'
 
 import PostsLayout from '@/layouts/Posts.astro'
 
-type Params = InferGetStaticParamsType<typeof getStaticPaths>
-type Props = InferGetStaticPropsType<typeof getStaticPaths>
-
 export const getStaticPaths = (({ paginate }) => [
-  ...paginate(posts, { pageSize: config.postlist.pageSize }),
-  ...groups.flatMap(({ path: groupPath, group }) =>
-    group.flatMap(({ path: collectionPath, collection }) =>
+  ...paginate(posts, {
+    params: { path: undefined },
+    props: { filterLabel: undefined },
+    pageSize: config.postlist.pageSize,
+  }),
+  ...groups.flatMap(({ path: groupPath, title: groupTitle, group }) =>
+    group.flatMap(({ path: collectionPath, title: collectionTitle, collection }) =>
       paginate(collection, {
         params: { path: `${groupPath}/${collectionPath}` },
+        props: { filterLabel: [groupTitle, collectionTitle] },
         pageSize: config.postlist.pageSize,
       }),
     ),
   ),
 ]) satisfies GetStaticPaths
 
-const { path } = Astro.params as Params
-const { page } = Astro.props
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { props } = Astro
 ---
 
-<PostsLayout path={path} page={page} />
+<PostsLayout {...props} />
