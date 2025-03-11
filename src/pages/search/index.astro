@@ -19,21 +19,26 @@ import '@pagefind/modular-ui/css/ui.css'
 <script>
   import { Instance, Input, ResultList } from '@pagefind/modular-ui'
 
-  const instance = new Instance({ bundlePath: '/search/' })
+  const searchInstance = new Instance({ bundlePath: `${import.meta.env.BASE_URL}search/` })
 
-  instance.add(new Input({ inputElement: '#search' }))
+  window.initSearch = () => {
+    searchInstance.add(new Input({ inputElement: '#search' }))
+    searchInstance.add(
+      new ResultList({
+        containerElement: '#results',
+        placeholderTemplate: () => document.createElement('li'),
+        resultTemplate: ({ url, meta: { title }, excerpt }: never) => {
+          const elem = document.createElement('li')
+          elem.innerHTML = `<a href="${url}"><h4>${title}</h4><p>${excerpt}</p></a>`
+          return elem
+        },
+      }),
+    )
+  }
+</script>
 
-  instance.add(
-    new ResultList({
-      containerElement: '#results',
-      placeholderTemplate: null,
-      resultTemplate: ({ url, meta: { title }, excerpt }: never) => {
-        const elem = document.createElement('li')
-        elem.innerHTML = `<a href="${url}"><h4>${title}</h4><p>${excerpt}</p></a>`
-        return elem
-      },
-    }),
-  )
+<script is:inline data-astro-rerun>
+  document.addEventListener('astro:page-load', () => window.initSearch(), { once: true })
 </script>
 
 <style>

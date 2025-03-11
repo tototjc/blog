@@ -7,3 +7,7 @@ declare module 'virtual:config' {
 }
 
 declare module '@pagefind/modular-ui'
+
+interface Window {
+  initSearch(): void
+}
