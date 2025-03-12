@@ -11,7 +11,7 @@ import siteConfig from './src/site.config'
 const isDevelopment = process.env.NODE_ENV === 'development'
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'http://localhost:4321',
+  site: process.env.SITE_URL,
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
