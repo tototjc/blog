@@ -1,8 +1,6 @@
 import type { CmsConfig } from 'decap-cms-core'
-import config from 'virtual:config'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import { i18n, site } from 'astro:config/client'
+import config from 'virtual:config'
 
 export default {
   load_config_file: false,
@@ -12,8 +10,6 @@ export default {
   media_folder: 'assets',
   i18n: i18n && {
     structure: 'multiple_folders',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     locales: i18n.locales.map(locale => (typeof locale === 'string' ? locale : locale.path)),
     default_locale: i18n.defaultLocale,
   },
