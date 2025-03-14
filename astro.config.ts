@@ -7,13 +7,13 @@ import rehypeExternalLinks from 'rehype-external-links'
 
 import siteConfigHelper from './src/integrations/site-config-helper'
 
-const isDevelopment = process.env.NODE_ENV === 'development'
-
 export default defineConfig({
   site: process.env.SITE_URL,
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
+    headingIdCompat: true,
+    preserveScriptOrder: true,
     responsiveImages: true,
     serializeConfig: true,
     svg: {
@@ -84,19 +84,13 @@ export default defineConfig({
     }),
   ],
   vite: {
-    build: {
-      sourcemap: isDevelopment,
-    },
     css: {
-      devSourcemap: isDevelopment,
+      devSourcemap: true,
     },
     resolve: {
       alias: {
         '@/': 'src/',
       },
-    },
-    ssr: {
-      noExternal: ['katex'],
     },
   },
 })
