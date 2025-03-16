@@ -23,14 +23,12 @@
   },
   "browserslist": {
     "production": [
-      "fully supports es6-module",
+      "cover 95% and fully supports es6",
       "not dead"
     ],
     "development": [
-      "last 1 versions"
-    ],
-    "ssr": [
-      "maintained node versions"
+      "last 1 version and fully supports es6",
+      "not dead"
     ]
   },
   "devDependencies": {
