@@ -6,23 +6,18 @@ I'm building a lightweight blog program for personal use. This project will neve
 
 ## Todo
 
-- [ ] responsive style
 - [ ] load markdown file from online github repo
 - [ ] pwa
 - [ ] katex in decap preview
 - [ ] post tag
-- [ ] search
 
 Additional features are still being considered...
 
 ## Environment variables
 
-| Key               | Description                                                                     |
-| ----------------- | ------------------------------------------------------------------------------- |
-| SITE_URL          | The base URL of your site.                                                      |
-| CONTENT_GH_REPO   | **Required**. Github repository name. (Pattern: `[org-or-username]/[repo-name`) |
-| CONTENT_GH_BRANCH | Git branch name. Default: `master`.                                             |
-| GH_OAUTH_PROXY    | GitHub OAuth App Proxy server. Default: `https://api.netlify.com`.              |
+| Key      | Description                |
+| -------- | -------------------------- |
+| SITE_URL | The base URL of your site. |
 
 **See Also:**
 
