@@ -3,7 +3,7 @@ import { experimental_AstroContainer } from 'astro/container'
 import { createIndex } from 'pagefind'
 import mime from 'mime'
 
-import config from 'virtual:config'
+import { search } from 'virtual:config'
 
 import { posts } from '@/utils/getContents'
 
@@ -11,7 +11,7 @@ import { posts } from '@/utils/getContents'
 // @ts-ignore
 import Page from '@/pages/[...slug].astro'
 
-const { index, errors: createErrors } = await createIndex(config.search)
+const { index, errors: createErrors } = await createIndex(search)
 
 if (!index) {
   throw new Error(createErrors.join('\n'))

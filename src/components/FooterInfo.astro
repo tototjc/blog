@@ -1,16 +1,16 @@
 ---
-import config from 'virtual:config'
+import { author, beian } from 'virtual:config'
 
 const year = new Date().getFullYear()
 ---
 
 <div>
   {
-    config.author && (
+    author && (
       <p>
         &copy; {year}{' '}
-        <a href={config.author.url ?? '#'} rel="noopener noreferrer" target="_blank">
-          {config.author.name}
+        <a href={author.url ?? '#'} rel="noopener noreferrer" target="_blank">
+          {author.name}
         </a>
       </p>
     )
@@ -29,9 +29,15 @@ const year = new Date().getFullYear()
       target="_blank">CC BY-NC-SA 4.0</a
     >.
   </p>
-  <p>
-    <a href="https://beian.miit.gov.cn" rel="noopener noreferrer" target="_blank">{config.beian}</a>
-  </p>
+  {
+    beian && (
+      <p>
+        <a href="https://beian.miit.gov.cn" rel="noopener noreferrer" target="_blank">
+          {beian}
+        </a>
+      </p>
+    )
+  }
 </div>
 
 <style>

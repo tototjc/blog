@@ -1,7 +1,7 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
 
-import config from 'virtual:config'
+import { postlist } from 'virtual:config'
 
 import { posts, groups } from '@/utils/getContents'
 
@@ -11,14 +11,14 @@ export const getStaticPaths = (({ paginate }) => [
   ...paginate(posts, {
     params: { path: undefined },
     props: { filterLabel: undefined },
-    pageSize: config.postlist.pageSize,
+    pageSize: postlist.pageSize,
   }),
   ...groups.flatMap(({ path: groupPath, title: groupTitle, group }) =>
     group.flatMap(({ path: collectionPath, title: collectionTitle, collection }) =>
       paginate(collection, {
         params: { path: `${groupPath}/${collectionPath}` },
         props: { filterLabel: [groupTitle, collectionTitle] },
-        pageSize: config.postlist.pageSize,
+        pageSize: postlist.pageSize,
       }),
     ),
   ),

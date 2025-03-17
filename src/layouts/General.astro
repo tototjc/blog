@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from 'astro/types'
-import config from 'virtual:config'
+import { title as siteTitle, nav } from 'virtual:config'
 
 import BaseLayout from './Base.astro'
 
@@ -13,10 +13,10 @@ type Props = ComponentProps<typeof BaseLayout>
 const { title, ...props } = Astro.props
 ---
 
-<BaseLayout title={title && `${title} | ${config.title}`} {...props}>
+<BaseLayout title={title && `${title} | ${siteTitle}`} {...props}>
   <header>
-    <Logo logo={config.title} />
-    <NavBar links={config.nav} />
+    <Logo logo={siteTitle} />
+    <NavBar links={nav} />
   </header>
   <main>
     <slot />

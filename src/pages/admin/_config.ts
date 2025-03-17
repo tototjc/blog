@@ -1,12 +1,12 @@
 import type { CmsConfig } from 'decap-cms-core'
 import { i18n, site } from 'astro:config/client'
-import config from 'virtual:config'
+import { cms } from 'virtual:config'
 
 export default {
   load_config_file: false,
   site_url: site,
-  locale: config.cms.locale,
-  backend: config.cms.backend,
+  locale: cms.locale,
+  backend: cms.backend,
   media_folder: 'assets',
   i18n: i18n && {
     structure: 'multiple_folders',

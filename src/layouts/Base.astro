@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions'
-import config from 'virtual:config'
+import { title as siteTitle, description as siteDesc, author } from 'virtual:config'
 
 import LoadingProgress from '@/components/LoadingProgress.astro'
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-  props: { title = config.title, description = config.description },
+  props: { title = siteTitle, description = siteDesc },
   site = 'https://example.com/',
   url,
   generator,
@@ -30,13 +30,13 @@ const {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="generator" content={generator} />
-    <meta name="author" content={config.author?.name} />
+    <meta name="author" content={author?.name} />
     <meta name="color-scheme" content="light dark" />
 
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="canonical" href={new URL(url.pathname, site)} />
-    <link rel="alternate" type="application/rss+xml" title={config.title} href={new URL('rss.xml', site)} />
+    <link rel="alternate" type="application/rss+xml" title={siteTitle} href={new URL('rss.xml', site)} />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />

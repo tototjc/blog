@@ -4,7 +4,10 @@ const resolveVirtualModuleId = <T extends string>(id: T): `\0${T}` => `\0${id}`
 
 export function virtualSiteConfig(config: object): NonNullable<ViteUserConfig['plugins']>[number] {
   const modules = {
-    'virtual:config': `export default ${JSON.stringify(config)}`,
+    'virtual:config': Array.from(
+      Object.entries(config),
+      ([key, value]) => `export const ${key} = ${JSON.stringify(value)}`,
+    ).join('\n'),
   }
 
   const resolutionMap = Object.fromEntries(
