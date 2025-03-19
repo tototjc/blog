@@ -16,7 +16,7 @@ export default {
   collections: [
     {
       name: 'posts',
-      label: 'Blog Posts',
+      label: 'Posts',
       create: true,
       folder: 'post',
       format: 'frontmatter',
@@ -35,7 +35,7 @@ export default {
         { name: 'category', label: 'Category', widget: 'string' },
         { name: 'pubDate', label: 'Publish Date', widget: 'datetime' },
         { name: 'updDate', label: 'Update Date', widget: 'datetime', default: '{{now}}' },
-        { name: 'body', label: 'Main Body', widget: 'markdown', i18n: true },
+        { name: 'body', label: 'Text', widget: 'markdown', i18n: true },
       ],
     },
     {
@@ -48,8 +48,8 @@ export default {
           label: 'About',
           file: 'about.md',
           fields: [
-            { label: 'Title', name: 'title', widget: 'hidden', default: 'About', required: true },
-            { label: 'Main Body', name: 'body', widget: 'markdown' },
+            { name: 'title', label: 'Title', widget: 'hidden', default: 'About', required: true },
+            { name: 'body', label: 'Text', widget: 'markdown' },
           ],
         },
         {
@@ -58,7 +58,7 @@ export default {
           file: 'blogroll.md',
           fields: [
             { name: 'title', label: 'Title', widget: 'hidden', default: 'Blogroll', required: true },
-            { name: 'body', label: 'Main Body', widget: 'markdown' },
+            { name: 'body', label: 'Text', widget: 'markdown' },
           ],
         },
       ],
