@@ -1,24 +1,24 @@
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import pluginAstro from 'eslint-plugin-astro'
-import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import js from '@eslint/js'
+import ts from 'typescript-eslint'
+import astro from 'eslint-plugin-astro'
+import configPrettier from 'eslint-config-prettier/flat'
 import globals from 'globals'
 
+import { defineConfig } from 'eslint/config'
 import { includeIgnoreFile } from '@eslint/compat'
 import { fileURLToPath } from 'node:url'
 
-/** @type {import('eslint').Linter.Config[]} */
-
-export default [
+export default defineConfig([
   includeIgnoreFile(fileURLToPath(import.meta.resolve('./.gitignore'))),
-  eslint.configs.recommended,
-  ...tseslint.config(tseslint.configs.recommended, {
+  js.configs.recommended,
+  ts.configs.recommended,
+  astro.configs.recommended,
+  {
     files: ['**/*.d.ts'],
     rules: {
       '@typescript-eslint/triple-slash-reference': 'off',
     },
-  }),
-  ...pluginAstro.configs['flat/recommended'],
+  },
   {
     files: ['*.config.{js,ts}'],
     languageOptions: {
@@ -27,5 +27,5 @@ export default [
       },
     },
   },
-  eslintConfigPrettier,
-]
+  configPrettier,
+])
