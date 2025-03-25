@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from 'astro/types'
-import { title as siteTitle, nav } from 'virtual:config'
+import { title as siteTitle, nav, author, beian } from 'virtual:config'
 
 import BaseLayout from './Base.astro'
 
@@ -22,7 +22,7 @@ const { title, ...props } = Astro.props
     <slot />
   </main>
   <footer>
-    <FooterInfo />
+    <FooterInfo {author} {beian} />
   </footer>
 </BaseLayout>
 

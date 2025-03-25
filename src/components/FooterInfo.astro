@@ -1,16 +1,37 @@
 ---
-import { author, beian } from 'virtual:config'
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'div'> {
+  author?: {
+    name: string
+    url?: string
+  }
+  beian?: string
+}
+
+const {
+  props: { author, beian, ...props },
+} = Astro
 
 const year = new Date().getFullYear()
 ---
 
-<div>
+<div {...props}>
   {
     author && (
       <p>
-        &copy; {year}{' '}
+        &copy;{` ${year} `}
         <a href={author.url ?? '#'} rel="noopener noreferrer" target="_blank">
           {author.name}
+        </a>
+      </p>
+    )
+  }
+  {
+    beian && (
+      <p>
+        <a href="https://beian.miit.gov.cn" rel="noopener noreferrer" target="_blank">
+          {beian}
         </a>
       </p>
     )
@@ -22,35 +43,23 @@ const year = new Date().getFullYear()
       target="_blank">GitHub</a
     >
   </p>
-  <p>
-    Unless otherwisenoted, all content on this site is licensed under <a
-      href="https://creativecommons.org/licenses/by-nc-sa/4.0"
-      rel="noopener noreferrer"
-      target="_blank">CC BY-NC-SA 4.0</a
-    >.
-  </p>
-  {
-    beian && (
-      <p>
-        <a href="https://beian.miit.gov.cn" rel="noopener noreferrer" target="_blank">
-          {beian}
-        </a>
-      </p>
-    )
-  }
 </div>
 
 <style>
   div {
-    text-align: center;
-    color: var(--c-text-bland);
+    display: flex;
+    flex-wrap: wrap;
+    place-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 2rem;
+    padding: 0.5rem;
+    color: var(--c-text);
     cursor: default;
 
     p {
       font-size: 0.85rem;
-      margin-block: 0.15rem;
 
-      a {
+      a:hover {
         text-decoration: underline;
       }
     }
