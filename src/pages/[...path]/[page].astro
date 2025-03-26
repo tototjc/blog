@@ -5,7 +5,11 @@ import { postlist } from 'virtual:config'
 
 import { posts, groups } from '@/utils/getContents'
 
-import PostsLayout from '@/layouts/Posts.astro'
+import GeneralLayout from '@/layouts/General.astro'
+
+import ArticleHeader from '@/components/ArticleHeader.astro'
+import PostList from '@/components/PostList.astro'
+import Pagination from '@/components/Pagination.astro'
 
 export const getStaticPaths = (({ paginate }) => [
   ...paginate(posts, {
@@ -26,7 +30,16 @@ export const getStaticPaths = (({ paginate }) => [
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { props } = Astro
+const { page, filterLabel } = Astro.props
 ---
 
-<PostsLayout {...props} />
+<GeneralLayout title={filterLabel?.toReversed().join(' | ')}>
+  {filterLabel && <ArticleHeader title={filterLabel.join(' - ')} />}
+  <PostList
+    list={page.data.map(entry => ({
+      link: import.meta.env.BASE_URL + entry.id,
+      ...entry.data,
+    }))}
+  />
+  <Pagination {page} />
+</GeneralLayout>
