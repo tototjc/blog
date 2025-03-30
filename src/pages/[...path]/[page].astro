@@ -7,7 +7,6 @@ import { posts, groups } from '@/utils/getContents'
 
 import GeneralLayout from '@/layouts/General.astro'
 
-import ArticleHeader from '@/components/ArticleHeader.astro'
 import PostList from '@/components/PostList.astro'
 import Pagination from '@/components/Pagination.astro'
 
@@ -34,7 +33,7 @@ const { page, filterLabel } = Astro.props
 ---
 
 <GeneralLayout title={filterLabel?.toReversed().join(' | ')}>
-  {filterLabel && <ArticleHeader title={filterLabel.join(' - ')} />}
+  {filterLabel && <h1>{filterLabel.join(' - ')}</h1>}
   <PostList
     list={page.data.map(entry => ({
       link: import.meta.env.BASE_URL + entry.id,
@@ -43,3 +42,15 @@ const { page, filterLabel } = Astro.props
   />
   <Pagination {page} />
 </GeneralLayout>
+
+<style>
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--c-text);
+    text-align: center;
+    text-wrap: balance;
+    padding: 0.25rem 1rem;
+    cursor: default;
+  }
+</style>

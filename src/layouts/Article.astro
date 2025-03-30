@@ -4,7 +4,8 @@ import type { ComponentProps } from 'astro/types'
 import type { Post } from '@/utils/getContents'
 
 import GeneralLayout from './General.astro'
-import ArticleHeader from '@/components/ArticleHeader.astro'
+import FormattedCategory from '@/components/utils/FormattedCategory.astro'
+import FormattedDate from '@/components/utils/FormattedDate.astro'
 
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
@@ -12,15 +13,83 @@ import 'katex/dist/katex.css'
 type Props = ComponentProps<typeof GeneralLayout> & Post['data']
 
 const { title, description, category, pubDate, updDate, readingTime } = Astro.props
-
-const headerProps = { title, category, pubDate, updDate, words: readingTime?.words.total }
-
-const titleId = '_top'
 ---
 
 <GeneralLayout {title} {description}>
-  <ArticleHeader id={titleId} {...headerProps} />
+  <h1 data-pagefind-meta="title">{title}</h1>
+  <div>
+    {
+      category && (
+        <span>
+          Category: <FormattedCategory category={category} data-pagefind-filter="category" />
+        </span>
+      )
+    }
+    {
+      pubDate && (
+        <span>
+          Publish: <FormattedDate date={pubDate} data-pagefind-sort="pubdate[datetime]" />
+        </span>
+      )
+    }
+    {
+      updDate && (
+        <span>
+          Update: <FormattedDate date={updDate} data-pagefind-sort="upddate[datetime]" />
+        </span>
+      )
+    }
+    {
+      readingTime && (
+        <span>
+          Words: {readingTime.words.total} ({readingTime.minutes} min read)
+        </span>
+      )
+    }
+  </div>
   <article data-pagefind-body>
     <slot />
   </article>
+  <div>
+    <span>
+      This article is licensed under <a
+        rel="noopener noreferrer"
+        target="_blank"
+        href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a
+      >.
+    </span>
+  </div>
 </GeneralLayout>
+
+<style>
+  article {
+    margin: 1rem 0 2rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--c-text);
+    text-align: center;
+    text-wrap: balance;
+    padding: 0.25rem 1rem;
+    cursor: default;
+  }
+
+  div {
+    text-align: center;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    padding: 0.25rem 1rem;
+    font-size: 0.9rem;
+    color: var(--c-text);
+    cursor: default;
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+</style>

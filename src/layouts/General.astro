@@ -28,8 +28,6 @@ const { title, ...props } = Astro.props
 
 <style>
   header {
-    margin: 0 auto;
-    max-width: 50rem;
     position: sticky;
     top: 0;
     background: var(--c-bg);
@@ -37,19 +35,17 @@ const { title, ...props } = Astro.props
     place-items: center;
     place-content: space-between;
     gap: 1rem;
-    padding: 1rem;
   }
 
-  main {
-    margin: 0 auto;
-    max-width: 50rem;
-    min-height: 75vh;
-    padding: 1rem;
-  }
-
+  header,
+  main,
   footer {
     margin: 0 auto;
     max-width: 50rem;
     padding: 1rem;
+  }
+
+  main {
+    min-height: 75vh;
   }
 </style>

@@ -2,11 +2,10 @@
 import { groups } from '@/utils/getContents'
 
 import GeneralLayout from '@/layouts/General.astro'
-import ArticleHeader from '@/components/ArticleHeader.astro'
 ---
 
 <GeneralLayout title="Collections">
-  <ArticleHeader title="Collections" />
+  <h1>Collections</h1>
   {
     groups.map(({ path: groupPath, title, group }) => (
       <section>
@@ -27,6 +26,16 @@ import ArticleHeader from '@/components/ArticleHeader.astro'
 </GeneralLayout>
 
 <style>
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--c-text);
+    text-align: center;
+    text-wrap: balance;
+    padding: 0.25rem 1rem;
+    cursor: default;
+  }
+
   section {
     margin: 1.5rem;
 
