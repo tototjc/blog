@@ -12,14 +12,14 @@ import Pagination from '@/components/Pagination.astro'
 
 export const getStaticPaths = (({ paginate }) => [
   ...paginate(posts, {
-    params: { path: undefined },
+    params: { collection: undefined },
     props: { filterLabel: undefined },
     pageSize: postlist.pageSize,
   }),
   ...groups.flatMap(({ path: groupPath, title: groupTitle, group }) =>
     group.flatMap(({ path: collectionPath, title: collectionTitle, collection }) =>
       paginate(collection, {
-        params: { path: `${groupPath}/${collectionPath}` },
+        params: { collection: `${groupPath}/${collectionPath}` },
         props: { filterLabel: [groupTitle, collectionTitle] },
         pageSize: postlist.pageSize,
       }),
