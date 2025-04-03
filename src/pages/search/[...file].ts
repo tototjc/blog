@@ -7,9 +7,7 @@ import { search } from 'virtual:config'
 
 import { posts } from '@/utils/getContents'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Page from '@/pages/[...slug].astro'
+import Page from '@/pages/[...slug]/index.astro'
 
 const { index, errors: createErrors } = await createIndex(search)
 
