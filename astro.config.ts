@@ -16,9 +16,7 @@ export default defineConfig({
     preserveScriptOrder: true,
     responsiveImages: true,
     serializeConfig: true,
-    svg: {
-      mode: 'inline',
-    },
+    svg: true,
   },
   prefetch: {
     prefetchAll: true,

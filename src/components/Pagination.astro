@@ -16,7 +16,7 @@ const { page, ...props } = Astro.props
   {
     page.url.prev && (
       <a href={page.url.prev}>
-        <LeftArrow class="icon" title="Previous" />
+        <LeftArrow class="icon" aria-label="Previous" />
       </a>
     )
   }
@@ -40,7 +40,7 @@ const { page, ...props } = Astro.props
   {
     page.url.next && (
       <a href={page.url.next}>
-        <RightArrow class="icon" title="Next" />
+        <RightArrow class="icon" aria-label="Next" />
       </a>
     )
   }
