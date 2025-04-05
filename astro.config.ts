@@ -9,7 +9,7 @@ import siteConfigHelper from './src/integrations/site-config-helper'
 import astroDecapCms from './src/integrations/astro-decap-cms'
 
 export default defineConfig({
-  site: process.env.SITE_URL,
+  site: 'https://i.cuicu.icu',
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
