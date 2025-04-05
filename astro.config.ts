@@ -8,7 +8,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import siteConfigHelper from './src/integrations/site-config-helper'
 
 export default defineConfig({
-  site: process.env.SITE_URL,
+  site: 'https://i.cuicu.icu',
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
