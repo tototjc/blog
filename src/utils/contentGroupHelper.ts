@@ -1,8 +1,8 @@
 import type { CollectionEntry, CollectionKey } from 'astro:content'
 
-export type Collection = CollectionEntry<CollectionKey>
+type Collection = CollectionEntry<CollectionKey>
 
-export type CollectionGroup<C extends Collection> = {
+type CollectionGroup<C extends Collection> = {
   path: string
   title: string
   collection: C[]
@@ -25,8 +25,3 @@ export const groupCollections = <C extends Collection>(
     collection,
   }))
 }
-
-export const sortGroupByKey = <G extends CollectionGroup<Collection>>(
-  group: G,
-  { locales, options }: { locales?: Intl.LocalesArgument; options?: Intl.CollatorOptions },
-): G => group.sort((a, b) => String(a.title).localeCompare(String(b.title), locales, options))

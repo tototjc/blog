@@ -3,7 +3,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toString } from 'mdast-util-to-string'
 import readingTime, { type ReadingTimeResult } from 'reading-time'
 
-import { groupCollections, sortGroupByKey } from './contentGroupHelper'
+import { groupCollections } from './contentGroupHelper'
 
 type Post = CollectionEntry<'post'> & {
   data: {
@@ -36,12 +36,8 @@ export const groups = [
   {
     path: 'category',
     title: 'Category',
-    group: sortGroupByKey(
-      groupCollections(posts, entry => [entry.data.category ?? 'others']),
-      {
-        locales: 'zh-Hans-CN',
-        options: { sensitivity: 'accent' },
-      },
+    group: groupCollections(posts, entry => [entry.data.category ?? 'others']).sort((a, b) =>
+      String(a.title).localeCompare(String(b.title), 'zh-Hans-CN', { sensitivity: 'accent' }),
     ),
   },
 ]
