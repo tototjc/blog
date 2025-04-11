@@ -3,21 +3,16 @@ import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toString } from 'mdast-util-to-string'
 import readingTime, { type ReadingTimeResult } from 'reading-time'
 
-import { groupContents, sortGroupByKey } from './contentGroupHelper'
+import { groupCollections, sortGroupByKey } from './contentGroupHelper'
 
-export type Content = CollectionEntry<'blog'>
-
-export type Post = Content & {
+type Post = CollectionEntry<'post'> & {
   data: {
-    description?: string
-    readingTime?: ReadingTimeResult
+    description: string
+    readingTime: ReadingTimeResult
   }
 }
 
-export const contents = await getCollection('blog')
-
-export const posts = contents
-  .filter(({ id }) => id.startsWith('post/'))
+export const posts = (await getCollection('post'))
   .map(item => {
     const summaryLength = 75
     const plainText = toString(fromMarkdown(item.body ?? ''))
@@ -28,17 +23,21 @@ export const posts = contents
   })
   .sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
 
+export const pages = await getCollection('page')
+
+export const contents = [...posts, ...pages]
+
 export const groups = [
   {
     path: 'archive',
     title: 'Archive',
-    group: groupContents(posts, entry => [entry.data.pubDate?.getFullYear().toString() ?? 'others']),
+    group: groupCollections(posts, entry => [entry.data.pubDate?.getFullYear().toString() ?? 'others']),
   },
   {
     path: 'category',
     title: 'Category',
     group: sortGroupByKey(
-      groupContents(posts, entry => [entry.data.category ?? 'others']),
+      groupCollections(posts, entry => [entry.data.category ?? 'others']),
       {
         locales: 'zh-Hans-CN',
         options: { sensitivity: 'accent' },

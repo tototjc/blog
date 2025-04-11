@@ -1,8 +1,6 @@
 ---
 import type { ComponentProps } from 'astro/types'
 
-import type { Post } from '@/utils/getContents'
-
 import GeneralLayout from './General.astro'
 import FormattedCategory from '@/components/utils/FormattedCategory.astro'
 import FormattedDate from '@/components/utils/FormattedDate.astro'
@@ -10,7 +8,12 @@ import FormattedDate from '@/components/utils/FormattedDate.astro'
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
 
-type Props = ComponentProps<typeof GeneralLayout> & Post['data']
+type Props = ComponentProps<typeof GeneralLayout> & {
+  category?: string
+  pubDate?: Date
+  updDate?: Date
+  readingTime?: import('reading-time').ReadingTimeResult
+}
 
 const { title, description, category, pubDate, updDate, readingTime } = Astro.props
 ---
