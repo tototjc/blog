@@ -19,26 +19,26 @@ const { title, description, category, pubDate, updDate, readingTime } = Astro.pr
 ---
 
 <GeneralLayout {title} {description}>
-  <h1 data-pagefind-meta="title">{title}</h1>
+  <h1>{title}</h1>
   <div>
     {
       category && (
         <span>
-          Category: <FormattedCategory category={category} data-pagefind-filter="category" />
+          Category: <FormattedCategory category={category} />
         </span>
       )
     }
     {
       pubDate && (
         <span>
-          Publish: <FormattedDate date={pubDate} data-pagefind-sort="pubdate[datetime]" />
+          Publish: <FormattedDate date={pubDate} />
         </span>
       )
     }
     {
       updDate && (
         <span>
-          Update: <FormattedDate date={updDate} data-pagefind-sort="upddate[datetime]" />
+          Update: <FormattedDate date={updDate} />
         </span>
       )
     }
@@ -50,7 +50,15 @@ const { title, description, category, pubDate, updDate, readingTime } = Astro.pr
       )
     }
   </div>
-  <article data-pagefind-body>
+  <article
+    data-pagefind-meta={`title:${title}`}
+    data-pagefind-sort={[
+      pubDate && `pubdate:${pubDate.toISOString()}`,
+      updDate && `upddate:${updDate.toISOString()}`,
+    ].join(', ')}
+    data-pagefind-filter={category && `category:${category}`}
+    data-pagefind-body
+  >
     <slot />
   </article>
   <div>
