@@ -2,29 +2,29 @@
 import type { ComponentProps } from 'astro/types'
 
 import GeneralLayout from './General.astro'
-import FormattedCategory from '@/components/utils/FormattedCategory.astro'
+import FormattedCategories from '@/components/utils/FormattedCategories.astro'
 import FormattedDate from '@/components/utils/FormattedDate.astro'
 
 import '@/styles/markdown.css'
 import 'katex/dist/katex.css'
 
 type Props = ComponentProps<typeof GeneralLayout> & {
-  category?: string
+  categories?: string[]
   pubDate?: Date
   updDate?: Date
   readingTime?: import('reading-time').ReadingTimeResult
 }
 
-const { title, description, category, pubDate, updDate, readingTime } = Astro.props
+const { title, description, categories, pubDate, updDate, readingTime } = Astro.props
 ---
 
 <GeneralLayout {title} {description}>
   <h1>{title}</h1>
   <div>
     {
-      category && (
+      categories && (
         <span>
-          Category: <FormattedCategory category={category} />
+          Category: <FormattedCategories categories={categories} />
         </span>
       )
     }
@@ -56,7 +56,7 @@ const { title, description, category, pubDate, updDate, readingTime } = Astro.pr
       pubDate && `pubdate:${pubDate.toISOString()}`,
       updDate && `upddate:${updDate.toISOString()}`,
     ].join(', ')}
-    data-pagefind-filter={category && `category:${category}`}
+    data-pagefind-filter={categories && `category:${categories.join(', ')}`}
     data-pagefind-body
   >
     <slot />

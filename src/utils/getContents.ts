@@ -36,7 +36,7 @@ export const groups = [
   {
     path: 'category',
     title: 'Category',
-    group: groupCollections(posts, entry => [entry.data.category ?? 'others']).sort((a, b) =>
+    group: groupCollections(posts, entry => entry.data.categories ?? ['others']).sort((a, b) =>
       String(a.title).localeCompare(String(b.title), 'zh-Hans-CN', { sensitivity: 'accent' }),
     ),
   },

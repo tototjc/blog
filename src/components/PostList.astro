@@ -1,14 +1,14 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 
-import FormattedCategory from './utils/FormattedCategory.astro'
+import FormattedCategories from './utils/FormattedCategories.astro'
 import FormattedDate from './utils/FormattedDate.astro'
 
 interface PostListItem {
   link: string
   title: string
   description?: string
-  category?: string
+  categories?: string[]
   pubDate?: Date
 }
 
@@ -21,14 +21,14 @@ const { list, ...props } = Astro.props
 
 <ul {...props}>
   {
-    list.map(({ link, title, description, category, pubDate }) => (
+    list.map(({ link, title, description, categories, pubDate }) => (
       <li>
         <a href={link}>
           <h4>{title}</h4>
           {description && <p>{description}</p>}
         </a>
         <div>
-          {category && <FormattedCategory category={category} />}
+          {categories && <FormattedCategories categories={categories} />}
           {pubDate && <FormattedDate date={pubDate} />}
         </div>
       </li>

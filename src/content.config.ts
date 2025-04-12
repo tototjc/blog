@@ -9,7 +9,7 @@ export const collections = {
     }),
     schema: z.object({
       title: z.string(),
-      category: z.string().optional(),
+      categories: z.array(z.string()).optional(),
       pubDate: z.coerce.date().optional(),
       updDate: z.coerce.date().optional(),
     }),
