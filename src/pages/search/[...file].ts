@@ -23,6 +23,7 @@ for (const entry of posts) {
     content: await container.renderToString(Page, {
       params: { slug: entry.id },
       props: { entry },
+      partial: false,
     }),
   })
 }
@@ -38,5 +39,9 @@ export const getStaticPaths = (() =>
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 type Params = InferGetStaticParamsType<typeof getStaticPaths>
 
-export const GET: APIRoute<Props, Params> = async ({ params, props }) =>
-  new Response(props.data, { headers: { 'Content-Type': mime.getType(params.file) ?? '' } })
+export const GET: APIRoute<Props, Params> = ({ params, props }) =>
+  new Response(props.data, {
+    headers: {
+      'Content-Type': mime.getType(params.file) ?? '',
+    },
+  })
