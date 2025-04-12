@@ -29,20 +29,14 @@ for (const entry of posts) {
 
 const { files } = await index.getFiles()
 
-export const getStaticPaths = (() => files.map(file => ({ params: { file: file.path } }))) satisfies GetStaticPaths
+export const getStaticPaths = (() =>
+  files.map(file => ({
+    params: { file: file.path },
+    props: { data: file.content },
+  }))) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 type Params = InferGetStaticParamsType<typeof getStaticPaths>
 
-export const GET: APIRoute<Props, Params> = async ({ params }) => {
-  const file = files.find(file => file.path === params.file)
-  if (!file) {
-    return new Response('Not found', { status: 404 })
-  } else {
-    return new Response(file.content, {
-      headers: {
-        'Content-Type': mime.getType(file.path) ?? '',
-      },
-    })
-  }
-}
+export const GET: APIRoute<Props, Params> = async ({ params, props }) =>
+  new Response(props.data, { headers: { 'Content-Type': mime.getType(params.file) ?? '' } })
