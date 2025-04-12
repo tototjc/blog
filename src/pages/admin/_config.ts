@@ -26,13 +26,18 @@ export default {
       summary: '{{title}} - {{filename}} - {{commit_date}}',
       sortable_fields: ['commit_date', 'title', 'pubDate', 'updDate'],
       view_groups: [
-        { field: 'category', label: 'Category' },
         { field: 'pubDate', label: 'Publish Year', pattern: '\\d{4}' },
         { field: 'updDate', label: 'Update Year', pattern: '\\d{4}' },
       ],
       fields: [
         { name: 'title', label: 'Title', widget: 'string', required: true, i18n: true },
-        { name: 'category', label: 'Category', widget: 'string' },
+        {
+          name: 'categories',
+          label: 'Category',
+          widget: 'list',
+          summary: '{{fields.category}}',
+          field: { name: 'category', widget: 'string' },
+        },
         { name: 'pubDate', label: 'Publish Date', widget: 'datetime' },
         { name: 'updDate', label: 'Update Date', widget: 'datetime', default: '{{now}}' },
         { name: 'body', label: 'Text', widget: 'markdown', i18n: true },
