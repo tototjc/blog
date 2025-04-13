@@ -1,5 +1,5 @@
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType, InferGetStaticParamsType } from 'astro'
-import { experimental_AstroContainer } from 'astro/container'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { title as siteTitle } from 'virtual:config'
 import sharp from 'sharp'
 
@@ -7,7 +7,7 @@ import { contents } from '@/utils/getContents'
 
 import OgImg from '@/components/OgImg.astro'
 
-const container = await experimental_AstroContainer.create()
+const container = await AstroContainer.create()
 
 export const getStaticPaths = (() =>
   Array.fromAsync(contents, async entry => ({
@@ -15,7 +15,12 @@ export const getStaticPaths = (() =>
     props: {
       img: await sharp(
         new TextEncoder().encode(
-          await container.renderToString(OgImg, { props: { title: entry.data.title, subtitle: siteTitle } }),
+          await container.renderToString(OgImg, {
+            props: {
+              title: entry.data.title,
+              subtitle: siteTitle,
+            },
+          }),
         ),
       )
         .toFormat('png')

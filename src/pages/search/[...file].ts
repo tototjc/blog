@@ -1,7 +1,7 @@
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType, InferGetStaticParamsType } from 'astro'
-import { experimental_AstroContainer } from 'astro/container'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { createIndex } from 'pagefind'
-import mime from 'mime'
+import { lookup } from 'mrmime'
 
 import { search } from 'virtual:config'
 
@@ -15,7 +15,7 @@ if (!index) {
   throw new Error(createErrors.join('\n'))
 }
 
-const container = await experimental_AstroContainer.create()
+const container = await AstroContainer.create()
 
 for (const entry of posts) {
   await index.addHTMLFile({
@@ -42,6 +42,6 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>
 export const GET: APIRoute<Props, Params> = ({ params, props }) =>
   new Response(props.data, {
     headers: {
-      'Content-Type': mime.getType(params.file) ?? '',
+      'Content-Type': lookup(params.file) ?? 'application/octet-stream',
     },
   })
