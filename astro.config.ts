@@ -15,8 +15,6 @@ export default defineConfig({
     headingIdCompat: true,
     preserveScriptOrder: true,
     responsiveImages: true,
-    serializeConfig: true,
-    svg: true,
   },
   prefetch: {
     prefetchAll: true,
