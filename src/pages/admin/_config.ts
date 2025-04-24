@@ -31,6 +31,7 @@ export default {
       ],
       fields: [
         { name: 'title', label: 'Title', widget: 'string', required: true, i18n: true },
+        { name: 'description', label: 'Description', widget: 'string', i18n: true },
         {
           name: 'categories',
           label: 'Category',

@@ -7,18 +7,13 @@ import { groupCollections } from './contentGroupHelper'
 
 type Post = CollectionEntry<'post'> & {
   data: {
-    description: string
     readingTime: ReadingTimeResult
   }
 }
 
 export const posts = (await getCollection('post'))
   .map(item => {
-    const summaryLength = 75
-    const plainText = toString(fromMarkdown(item.body ?? ''))
-    ;(item as Post).data.description =
-      plainText.slice(0, summaryLength) + (plainText.length > summaryLength ? ' ...' : '')
-    ;(item as Post).data.readingTime = readingTime(plainText)
+    ;(item as Post).data.readingTime = readingTime(toString(fromMarkdown(item.body ?? '')))
     return item
   })
   .sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
