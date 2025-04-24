@@ -12,7 +12,10 @@ type Props = ComponentProps<typeof GeneralLayout> & {
   categories?: string[]
   pubDate?: Date
   updDate?: Date
-  readingTime?: import('reading-time').ReadingTimeResult
+  readingTime?: {
+    minutes: number
+    words: number
+  }
 }
 
 const { title, description, categories, pubDate, updDate, readingTime } = Astro.props
@@ -45,7 +48,7 @@ const { title, description, categories, pubDate, updDate, readingTime } = Astro.
     {
       readingTime && (
         <span>
-          Words: {readingTime.words.total} ({readingTime.minutes} min read)
+          Words: {readingTime.words} ({readingTime.minutes} min read)
         </span>
       )
     }

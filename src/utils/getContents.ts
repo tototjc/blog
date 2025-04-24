@@ -1,22 +1,21 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { toString } from 'mdast-util-to-string'
-import readingTime, { type ReadingTimeResult } from 'reading-time'
+import { readingTime } from 'reading-time-estimator'
 
 import { groupCollections } from './contentGroupHelper'
 
 type Post = CollectionEntry<'post'> & {
   data: {
-    readingTime: ReadingTimeResult
+    readingTime: {
+      minutes: number
+      words: number
+    }
   }
 }
 
-export const posts = (await getCollection('post'))
-  .map(item => {
-    ;(item as Post).data.readingTime = readingTime(toString(fromMarkdown(item.body ?? '')))
-    return item
-  })
-  .sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
+export const posts = Array.from<Post, Post>(await getCollection('post'), item => {
+  item.data.readingTime = readingTime(item.rendered?.html ?? '')
+  return item
+}).sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
 
 export const pages = await getCollection('page')
 
