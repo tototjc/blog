@@ -7,13 +7,24 @@ export const collections = {
       pattern: 'post/*.md',
       base: 'blog',
     }),
-    schema: z.object({
-      title: z.string(),
-      description: z.string().optional(),
-      categories: z.array(z.string()).optional(),
-      pubDate: z.coerce.date().optional(),
-      updDate: z.coerce.date().optional(),
-    }),
+    schema: z
+      .object({
+        title: z.string(),
+        description: z.string().optional(),
+        categories: z.array(z.string()).optional(),
+        pubDate: z.coerce.date().optional(),
+        updDate: z.coerce.date().optional(),
+      })
+      .superRefine(({ pubDate, updDate }, { addIssue }) => {
+        if (pubDate && updDate && updDate <= pubDate)
+          addIssue({
+            code: z.ZodIssueCode.too_small,
+            minimum: pubDate.valueOf(),
+            type: 'date',
+            inclusive: false,
+            path: ['updDate'],
+          })
+      }),
   }),
   page: defineCollection({
     loader: glob({
