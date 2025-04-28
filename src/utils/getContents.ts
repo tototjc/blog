@@ -15,7 +15,7 @@ type Post = CollectionEntry<'post'> & {
 export const posts = Array.from<Post, Post>(await getCollection('post'), item => {
   item.data.readingTime = readingTime(item.rendered?.html ?? '')
   return item
-}).sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
+}).sort((a, b) => (b.data.updDate ?? b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? a.data.pubDate ?? 0).valueOf())
 
 export const pages = await getCollection('page')
 

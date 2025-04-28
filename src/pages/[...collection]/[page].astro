@@ -35,9 +35,12 @@ const { page, filterLabel } = Astro.props
 <GeneralLayout title={filterLabel?.toReversed().join(' | ')}>
   {filterLabel && <h1>{filterLabel.join(' - ')}</h1>}
   <PostList
-    list={page.data.map(entry => ({
-      link: import.meta.env.BASE_URL + entry.id,
-      ...entry.data,
+    list={page.data.map(({ id, data: { title, description, categories, pubDate, updDate } }) => ({
+      link: import.meta.env.BASE_URL + id,
+      title,
+      description,
+      categories,
+      date: updDate ?? pubDate,
     }))}
   />
   <Pagination {page} />
