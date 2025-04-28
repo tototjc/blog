@@ -11,7 +11,10 @@ export const collections = {
       .object({
         title: z.string(),
         description: z.string().optional(),
-        categories: z.array(z.string()).optional(),
+        categories: z
+          .array(z.string())
+          .transform(val => Array.from(new Set(val)))
+          .optional(),
         pubDate: z.coerce.date().optional(),
         updDate: z.coerce.date().optional(),
       })
