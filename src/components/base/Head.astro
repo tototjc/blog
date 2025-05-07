@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'head'> {
+  title?: string
+  description?: string
+  author?: {
+    name: string
+    url?: string
+  }
+  sitename?: string
+}
+
+const {
+  props: { title, description, sitename, author, ...props },
+  site = 'https://example.com/',
+  url,
+  generator,
+} = Astro
+---
+
+<head {...props}>
+  <title>{title ? `${title} | ${sitename}` : sitename}</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=auto" />
+  {title && <meta name="title" content={title} />}
+  {description && <meta name="description" content={description} />}
+  {author && <meta name="author" content={author.name} />}
+  <meta name="generator" content={generator} />
+  <meta name="color-scheme" content="light dark" />
+
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="canonical" href={new URL(url.pathname, site)} />
+  <link rel="alternate" type="application/rss+xml" title={sitename} href={new URL('rss.xml', site)} />
+
+  <slot />
+</head>

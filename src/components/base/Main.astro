@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'main'>
+
+const { props } = Astro
+---
+
+<main {...props}>
+  <slot />
+</main>
+
+<style>
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 75vh;
+  }
+</style>

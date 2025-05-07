@@ -23,36 +23,32 @@ const { title, description, categories, pubDate, updDate, readingTime } = Astro.
 
 <GeneralLayout {title} {description}>
   <h1>{title}</h1>
-  <div>
-    {
-      categories && (
-        <span>
-          Category: <FormattedCategories categories={categories} />
-        </span>
-      )
-    }
-    {
-      pubDate && (
-        <span>
-          Publish: <FormattedDate date={pubDate} />
-        </span>
-      )
-    }
-    {
-      updDate && (
-        <span>
-          Update: <FormattedDate date={updDate} />
-        </span>
-      )
-    }
-    {
-      readingTime && (
-        <span>
-          Words: {readingTime.words} ({readingTime.minutes} min read)
-        </span>
-      )
-    }
-  </div>
+  {
+    (pubDate ?? updDate ?? readingTime) && (
+      <div>
+        {categories && (
+          <span>
+            Category: <FormattedCategories categories={categories} />
+          </span>
+        )}
+        {pubDate && (
+          <span>
+            Publish: <FormattedDate date={pubDate} />
+          </span>
+        )}
+        {updDate && (
+          <span>
+            Update: <FormattedDate date={updDate} />
+          </span>
+        )}
+        {readingTime && (
+          <span>
+            Words: {readingTime.words} ({readingTime.minutes} min read)
+          </span>
+        )}
+      </div>
+    )
+  }
   <article
     data-pagefind-meta={`title:${title}`}
     data-pagefind-sort={[
@@ -76,17 +72,12 @@ const { title, description, categories, pubDate, updDate, readingTime } = Astro.
 </GeneralLayout>
 
 <style>
-  article {
-    margin: 1rem 0 2rem;
-  }
-
   h1 {
     font-size: 1.8rem;
     font-weight: 500;
     color: var(--c-text);
     text-align: center;
     text-wrap: balance;
-    padding: 0.25rem 1rem;
     cursor: default;
   }
 
