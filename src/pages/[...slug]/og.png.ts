@@ -5,19 +5,21 @@ import { title as siteTitle } from 'virtual:config'
 
 import { contents } from '@/utils/getContents'
 
-import { getOgImg } from '@/utils/opengraph'
+import { getImage } from '@/utils/opengraph'
 
 export const getStaticPaths = (() =>
   Array.fromAsync(contents, async entry => ({
     params: { slug: entry.id },
     props: {
-      img: await getOgImg({
-        text: {
-          title: entry.data.title,
-          subtitle: siteTitle,
+      img: await getImage({
+        content: {
+          primary: entry.data.title,
+          secondary: siteTitle,
         },
         format: {
           type: 'png',
+          width: 1200,
+          height: 630,
         },
       }),
     },

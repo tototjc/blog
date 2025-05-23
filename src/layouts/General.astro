@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions'
+import { i18n } from 'astro:config/server'
+
 import { title as siteTitle, description as siteDesc, author, nav, beian } from 'virtual:config'
 
 import LoadingProgress from '@/components/LoadingProgress.astro'
@@ -9,6 +11,8 @@ import Header from '@/components/base/Header.astro'
 import Main from '@/components/base/Main.astro'
 import Footer from '@/components/base/Footer.astro'
 
+import { getMetaTags } from '@/utils/opengraph'
+
 import '@/styles/global.css'
 
 interface Props {
@@ -17,7 +21,8 @@ interface Props {
 }
 
 const {
-  props: { title, description = siteDesc },
+  props: { title, description },
+  site = 'https://example.com/',
   url,
   currentLocale,
 } = Astro
@@ -25,12 +30,32 @@ const {
 
 <!doctype html>
 <html lang={currentLocale}>
-  <Head title={title} sitename={siteTitle} {description} {author}>
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(url.pathname + '/og.png', url)} />
+  <Head title={title ? `${title} | ${siteTitle}` : siteTitle} {description} {author}>
+    {
+      getMetaTags({
+        type: url.pathname.startsWith('/posts/') ? 'article' : 'website',
+        sitename: siteTitle,
+        url,
+        title: title ?? siteTitle,
+        description: description ?? siteDesc,
+        image: {
+          url: new URL(url.pathname + '/og.png', url),
+          type: 'image/png',
+          width: 1200,
+          height: 630,
+          alt: title ?? siteTitle,
+        },
+        locale: i18n && {
+          default: i18n.defaultLocale,
+          alternate: i18n.locales.map(locale => (typeof locale === 'string' ? locale : locale.path)),
+        },
+      }).map(attrs => <meta {...attrs} />)
+    }
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={new URL(url.pathname, site)} />
+    <link rel="alternate" type="application/rss+xml" title={siteTitle} href={new URL('rss.xml', site)} />
 
     <slot name="head" />
 
