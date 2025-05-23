@@ -5,6 +5,8 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeExternalLinks from 'rehype-external-links'
 
+import devtoolsJson from 'vite-plugin-devtools-json'
+
 import siteConfigHelper from './src/integrations/site-config-helper'
 
 export default defineConfig({
@@ -83,6 +85,7 @@ export default defineConfig({
     css: {
       devSourcemap: true,
     },
+    plugins: [devtoolsJson()],
     resolve: {
       alias: {
         '@/': 'src/',
