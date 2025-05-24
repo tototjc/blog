@@ -48,6 +48,10 @@ const {
 
 <style>
   header {
+    top: 0;
+    position: sticky;
+    z-index: calc(infinity);
+    background: var(--c-bg);
     display: flex;
     place-items: center;
     place-content: space-between;
@@ -75,6 +79,7 @@ const {
     }
 
     & > label {
+      z-index: 1;
       display: flex;
       place-items: center;
       place-content: center;
@@ -163,7 +168,6 @@ const {
         place-content: center;
         gap: 1rem;
         transition: transform 0.2s ease-in-out;
-        z-index: -1;
 
         label:not(:has(input:checked)) + & {
           transform: translateY(-100%);
@@ -176,7 +180,6 @@ const {
           background: radial-gradient(circle, var(--c-bg-mute), transparent 15%);
           transition: transform 0.3s ease-in-out;
           transform: scale(10);
-          z-index: -1;
 
           @starting-style {
             transform: scale(0);
