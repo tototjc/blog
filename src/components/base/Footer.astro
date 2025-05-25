@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 
-interface Props extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<'footer'> {
   author?: {
     name: string
     url?: string
@@ -16,37 +16,37 @@ const {
 const year = new Date().getFullYear()
 ---
 
-<div {...props}>
+<footer {...props}>
   {
     author && (
-      <p>
+      <div>
         &copy;{` ${year} `}
         <a href={author.url ?? '#'} rel="noopener noreferrer" target="_blank">
           {author.name}
         </a>
-      </p>
+      </div>
     )
   }
   {
     beian && (
-      <p>
+      <div>
         <a href="https://beian.miit.gov.cn" rel="noopener noreferrer" target="_blank">
           {beian}
         </a>
-      </p>
+      </div>
     )
   }
-  <p>
+  <div>
     Powered by <a href="https://astro.build" rel="noopener noreferrer" target="_blank">Astro</a> | Source code on <a
       href="https://github.com/tototjc/blog "
       rel="noopener noreferrer"
       target="_blank">GitHub</a
     >
-  </p>
-</div>
+  </div>
+</footer>
 
 <style>
-  div {
+  footer {
     display: flex;
     flex-wrap: wrap;
     place-items: center;
@@ -56,7 +56,7 @@ const year = new Date().getFullYear()
     color: var(--c-text);
     cursor: default;
 
-    p {
+    div {
       font-size: 0.85rem;
 
       a:hover {

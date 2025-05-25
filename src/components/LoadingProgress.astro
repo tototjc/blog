@@ -26,11 +26,10 @@
   customElements.define(
     'page-loading-progress',
     class extends HTMLElement {
-      constructor() {
-        super()
+      connectedCallback() {
         this.popover = 'manual'
-        document.addEventListener('astro:before-preparation', this.showPopover.bind(this))
-        document.addEventListener('astro:after-preparation', this.hidePopover.bind(this))
+        document.addEventListener('astro:before-preparation', this.showPopover.bind(this), { once: true })
+        document.addEventListener('astro:after-preparation', this.hidePopover.bind(this), { once: true })
       }
     },
   )

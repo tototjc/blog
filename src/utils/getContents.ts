@@ -1,48 +1,37 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { toString } from 'mdast-util-to-string'
-import readingTime, { type ReadingTimeResult } from 'reading-time'
+import { readingTime } from 'reading-time-estimator'
 
-import { groupContents, sortGroupByKey } from './contentGroupHelper'
+import { groupCollections } from './contentGroupHelper'
 
-export type Content = CollectionEntry<'blog'>
-
-export type Post = Content & {
+type Post = CollectionEntry<'post'> & {
   data: {
-    description?: string
-    readingTime?: ReadingTimeResult
+    readingTime: {
+      minutes: number
+      words: number
+    }
   }
 }
 
-export const contents = await getCollection('blog')
+export const posts = Array.from<Post, Post>(await getCollection('post'), item => {
+  item.data.readingTime = readingTime(item.rendered?.html ?? '')
+  return item
+}).sort((a, b) => (b.data.updDate ?? b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? a.data.pubDate ?? 0).valueOf())
 
-export const posts = contents
-  .filter(({ id }) => id.startsWith('post/'))
-  .map(item => {
-    const summaryLength = 75
-    const plainText = toString(fromMarkdown(item.body ?? ''))
-    ;(item as Post).data.description =
-      plainText.slice(0, summaryLength) + (plainText.length > summaryLength ? ' ...' : '')
-    ;(item as Post).data.readingTime = readingTime(plainText)
-    return item
-  })
-  .sort((a, b) => (b.data.pubDate ?? 0).valueOf() - (a.data.pubDate ?? 0).valueOf())
+export const pages = await getCollection('page')
+
+export const contents = [...posts, ...pages]
 
 export const groups = [
   {
     path: 'archive',
     title: 'Archive',
-    group: groupContents(posts, entry => [entry.data.pubDate?.getFullYear().toString() ?? 'others']),
+    group: groupCollections(posts, entry => [entry.data.pubDate?.getFullYear().toString() ?? 'others']),
   },
   {
     path: 'category',
     title: 'Category',
-    group: sortGroupByKey(
-      groupContents(posts, entry => [entry.data.category ?? 'others']),
-      {
-        locales: 'zh-Hans-CN',
-        options: { sensitivity: 'accent' },
-      },
+    group: groupCollections(posts, entry => entry.data.categories ?? ['others']).sort((a, b) =>
+      String(a.title).localeCompare(String(b.title), 'zh-Hans-CN', { sensitivity: 'accent' }),
     ),
   },
 ]

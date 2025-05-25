@@ -1,51 +1,102 @@
 ---
-import type { ComponentProps } from 'astro/types'
-import { title as siteTitle, nav, author, beian } from 'virtual:config'
+import { ClientRouter } from 'astro:transitions'
+import { i18n } from 'astro:config/server'
 
-import BaseLayout from './Base.astro'
+import { title as siteTitle, description as siteDesc, author, nav, beian } from 'virtual:config'
 
-import Logo from '@/components/Logo.astro'
-import NavBar from '@/components/NavBar.astro'
-import FooterInfo from '@/components/FooterInfo.astro'
+import LoadingProgress from '@/components/LoadingProgress.astro'
 
-type Props = ComponentProps<typeof BaseLayout>
+import Head from '@/components/base/Head.astro'
+import Header from '@/components/base/Header.astro'
+import Main from '@/components/base/Main.astro'
+import Footer from '@/components/base/Footer.astro'
 
-const { title, ...props } = Astro.props
+import { getMetaTags } from '@/utils/opengraph'
+
+import '@/styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  props: { title, description },
+  site = 'https://example.com/',
+  url,
+  currentLocale,
+} = Astro
 ---
 
-<BaseLayout title={title && `${title} | ${siteTitle}`} {...props}>
-  <header>
-    <Logo logo={siteTitle} />
-    <NavBar links={nav} />
-  </header>
-  <main>
-    <slot />
-  </main>
-  <footer>
-    <FooterInfo {author} {beian} />
-  </footer>
-</BaseLayout>
+<!doctype html>
+<html lang={currentLocale}>
+  <Head title={title ? `${title} | ${siteTitle}` : siteTitle} {description} {author}>
+    {
+      getMetaTags({
+        type: url.pathname.startsWith('/posts/') ? 'article' : 'website',
+        sitename: siteTitle,
+        url,
+        title: title ?? siteTitle,
+        description: description ?? siteDesc,
+        image: {
+          url: new URL(url.pathname + '/og.png', url),
+          type: 'image/png',
+          width: 1200,
+          height: 630,
+          alt: title ?? siteTitle,
+        },
+        locale: i18n && {
+          default: i18n.defaultLocale,
+          alternate: i18n.locales.map(locale => (typeof locale === 'string' ? locale : locale.path)),
+        },
+      }).map(attrs => <meta {...attrs} />)
+    }
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={new URL(url.pathname, site)} />
+    <link rel="alternate" type="application/rss+xml" title={siteTitle} href={new URL('rss.xml', site)} />
+
+    <slot name="head" />
+
+    <ClientRouter />
+  </Head>
+  <body>
+    <LoadingProgress />
+    <Header class="container" logo={siteTitle} {nav} />
+    <Main class="container">
+      <slot />
+    </Main>
+    <Footer class="container" {author} {beian} />
+  </body>
+</html>
 
 <style>
-  header {
-    position: sticky;
-    top: 0;
-    background: var(--c-bg);
-    display: flex;
-    place-items: center;
-    place-content: space-between;
-    gap: 1rem;
+  html {
+    accent-color: var(--c-primary);
+    direction: ltr;
+    font: normal 1rem/1.5 var(--font-default);
+    font-optical-sizing: auto;
+    interpolate-size: allow-keywords;
+    text-rendering: optimizelegibility;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    overflow-anchor: auto;
+    overflow: hidden auto;
+
+    body {
+      width: 100vw;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      background: var(--c-bg);
+    }
   }
 
-  header,
-  main,
-  footer {
+  .container {
     margin: 0 auto;
     max-width: 50rem;
     padding: 1rem;
-  }
-
-  main {
-    min-height: 75vh;
   }
 </style>

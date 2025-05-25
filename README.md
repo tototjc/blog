@@ -9,17 +9,10 @@ I'm building a lightweight blog program for personal use. This project will neve
 - [ ] load markdown file from online github repo
 - [ ] pwa
 - [ ] katex in decap preview
-- [ ] post tag
 
 Additional features are still being considered...
 
-## Environment variables
-
-| Key      | Description                |
-| -------- | -------------------------- |
-| SITE_URL | The base URL of your site. |
-
-**See Also:**
+### See Also
 
 Decap CMS Docs: [Backend Configuration](https://decapcms.org/docs/backends-overview)
 

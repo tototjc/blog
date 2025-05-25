@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'head'> {
+  title: string
+  description?: string
+  author?: {
+    name: string
+  }
+}
+
+const {
+  props: { title, description, author, ...props },
+  generator,
+} = Astro
+---
+
+<head {...props}>
+  <title>{title}</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=auto" />
+  <meta name="title" content={title} />
+  {description && <meta name="description" content={description} />}
+  {author && <meta name="author" content={author.name} />}
+  <meta name="generator" content={generator} />
+  <meta name="color-scheme" content="light dark" />
+
+  <slot />
+</head>

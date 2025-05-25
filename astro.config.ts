@@ -5,6 +5,8 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeExternalLinks from 'rehype-external-links'
 
+import devtoolsJson from 'vite-plugin-devtools-json'
+
 import siteConfigHelper from './src/integrations/site-config-helper'
 import astroDecapCms from './src/integrations/astro-decap-cms'
 
@@ -16,8 +18,6 @@ export default defineConfig({
     headingIdCompat: true,
     preserveScriptOrder: true,
     responsiveImages: true,
-    serializeConfig: true,
-    svg: true,
   },
   prefetch: {
     prefetchAll: true,
@@ -139,6 +139,7 @@ export default defineConfig({
     css: {
       devSourcemap: true,
     },
+    plugins: [devtoolsJson()],
     resolve: {
       alias: {
         '@/': 'src/',
