@@ -7,7 +7,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 
 import devtoolsJson from 'vite-plugin-devtools-json'
 
-import siteConfigHelper from './src/integrations/site-config-helper'
+import blogTheme from './src/integrations/theme'
 
 export default defineConfig({
   site: 'https://i.cuicu.icu',
@@ -48,7 +48,7 @@ export default defineConfig({
     sitemap({
       filter: page => !new URL(page).pathname.startsWith('/admin'),
     }),
-    siteConfigHelper({
+    blogTheme({
       title: "Gaaising's Blog",
       description: "Gaaising Tam's personal blog",
       author: {
