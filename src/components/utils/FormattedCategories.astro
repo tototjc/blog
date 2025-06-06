@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'span'> {
-  categories: string[]
+  categories: {
+    name: string
+    slug: string
+  }[]
 }
 
 const { categories, ...props } = Astro.props
@@ -10,9 +13,9 @@ const { categories, ...props } = Astro.props
 
 <span {...props}>
   {
-    categories.map((category, index) => (
+    categories.map(({ name, slug }, index) => (
       <>
-        <a href={`/category/${category}/1`}>{category}</a>
+        <a href={slug}>{name}</a>
         {index < categories.length - 1 && ', '}
       </>
     ))
