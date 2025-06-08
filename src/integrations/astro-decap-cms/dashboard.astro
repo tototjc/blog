@@ -10,23 +10,12 @@
 </html>
 
 <script>
-  import { cmsConfig, previewStyles, previewContainersTag } from 'astro-decap-cms:config'
+  import { config, previewStyleParams, previewContainerParams } from 'astro-decap-cms:config'
   import CMS from 'decap-cms-app/dist/decap-cms-app.js'
   import { createElement } from 'react'
-  if (previewContainersTag) {
-    const tag = previewContainersTag
-    cmsConfig.collections
-      .flatMap(({ name, files }) => {
-        if (files && files.length) {
-          return files.map(file => file.name)
-        } else {
-          return name
-        }
-      })
-      .forEach(name => CMS.registerPreviewTemplate(name, props => createElement(tag, null, props.widgetFor('body'))))
-  }
-  if (previewStyles && previewStyles.length) {
-    previewStyles.forEach(style => CMS.registerPreviewStyle(...style))
-  }
-  CMS.init({ config: cmsConfig })
+  previewStyleParams?.forEach(style => CMS.registerPreviewStyle(...style))
+  previewContainerParams?.forEach(({ target, tag }) =>
+    CMS.registerPreviewTemplate(target, props => createElement(tag, null, props.widgetFor('body'))),
+  )
+  CMS.init({ config })
 </script>

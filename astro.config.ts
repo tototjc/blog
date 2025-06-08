@@ -74,7 +74,7 @@ export default defineConfig({
     }),
     astroDecapCms({
       previewContainersTag: 'article',
-      previewStyles: [['/src/styles/global.css'], ['/src/styles/markdown.css']],
+      previewStyles: ['/src/styles/global.css', '/src/styles/markdown.css'],
       cmsConfig: {
         locale: 'zh_Hans',
         backend: {
