@@ -1,15 +1,20 @@
-import type { HTMLTag } from 'astro/types'
+import type { JSX } from 'react'
 import type { CmsConfig, CMS } from 'decap-cms-core'
+
+interface PreviewContainerElem<T extends keyof JSX.IntrinsicElements> {
+  tag: T
+  attr?: JSX.IntrinsicElements[T]
+}
 
 export interface UserConfig {
   cmsRoute?: string
   cmsConfig: Exclude<CmsConfig, 'load_config_file'>
   previewStyles?: (string | { src: string; raw: boolean })[]
-  previewContainersTag?: HTMLTag
+  previewContainer?: PreviewContainerElem<keyof JSX.IntrinsicElements>
 }
 
 export interface Config {
   config: CmsConfig
   previewStyleParams?: Parameters<CMS['registerPreviewStyle']>[]
-  previewContainerParams?: { target: string; tag: HTMLTag }[]
+  previewContainerParams?: (PreviewContainerElem<keyof JSX.IntrinsicElements> & { target: string })[]
 }
