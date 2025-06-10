@@ -1,9 +1,24 @@
 import type { AstroIntegration } from 'astro'
 import type { CmsConfig, CmsCollection, CmsCollectionFile } from 'decap-cms-core'
 
-import type { UserConfig, Config } from './type'
+import type { UserConfig, PreviewContainer, PreviewContainerWithTarget } from './type'
 
 import virtualConfig from './vite-plugin'
+
+const getPreviewContainerWithTarget = (
+  items: (CmsCollection | CmsCollectionFile)[],
+  previewContainer: PreviewContainer,
+): PreviewContainerWithTarget[] => {
+  return items.flatMap(item => {
+    if ('files' in item && Array.isArray(item.files)) {
+      return getPreviewContainerWithTarget(item.files, previewContainer) ?? []
+    } else {
+      const isMarkdownBody = item.fields?.some(field => field.widget === 'markdown' && field.name === 'body')
+      const { tag, attr } = previewContainer
+      return isMarkdownBody ? { target: item.name, tag, attr } : []
+    }
+  })
+}
 
 export default function (opts: UserConfig): AstroIntegration {
   const { cmsRoute = '/admin', cmsConfig, previewStyles, previewContainer } = opts
@@ -11,7 +26,7 @@ export default function (opts: UserConfig): AstroIntegration {
     name: 'astro-decap-cms',
     hooks: {
       'astro:config:setup': async ({ config, injectRoute, updateConfig }) => {
-        const defaultCmsConfig = {
+        const defaultCmsConfig: Partial<CmsConfig> = {
           load_config_file: false,
           site_url: config.site,
           i18n: config.i18n && {
@@ -19,27 +34,12 @@ export default function (opts: UserConfig): AstroIntegration {
             locales: config.i18n.locales.map(locale => (typeof locale === 'string' ? locale : locale.path)),
             default_locale: config.i18n.defaultLocale,
           },
-        } satisfies Partial<CmsConfig>
+        }
 
         const finalCmsConfig = {
           ...defaultCmsConfig,
           ...cmsConfig,
         } satisfies CmsConfig
-
-        const getPreviewContainerParams = (
-          items: (CmsCollection | CmsCollectionFile)[],
-        ): Config['previewContainerParams'] => {
-          if (!previewContainer) return undefined
-          return items.flatMap(item => {
-            if ('files' in item && Array.isArray(item.files)) {
-              return getPreviewContainerParams(item.files) ?? []
-            } else {
-              const isMarkdownBody = item.fields?.some(field => field.widget === 'markdown' && field.name === 'body')
-              const { tag, attr } = previewContainer
-              return isMarkdownBody ? { target: item.name, tag, attr } : []
-            }
-          })
-        }
 
         injectRoute({
           pattern: cmsRoute,
@@ -54,7 +54,11 @@ export default function (opts: UserConfig): AstroIntegration {
                 previewStyleParams: previewStyles?.map(style =>
                   typeof style === 'string' ? [style] : [style.src, { raw: style.raw }],
                 ),
-                previewContainerParams: getPreviewContainerParams(finalCmsConfig.collections),
+                previewContainerParams:
+                  previewContainer &&
+                  (Array.isArray(previewContainer)
+                    ? previewContainer
+                    : getPreviewContainerWithTarget(finalCmsConfig.collections, previewContainer)),
               }),
             ],
           },
