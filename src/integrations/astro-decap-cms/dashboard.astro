@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=auto" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Content Manager</title>
+  </head>
+  <body></body>
+</html>
+
+<script>
+  import CMS from 'decap-cms-app/dist/decap-cms-app.js'
+  import { config, previewStyleParams, previewContainerParams } from 'astro-decap-cms:config'
+  import { createElement } from 'react'
+  previewStyleParams?.forEach(style => CMS.registerPreviewStyle(...style))
+  previewContainerParams?.forEach(({ target, tag, attr }) =>
+    CMS.registerPreviewTemplate(target, props => createElement(tag, { ...attr }, props.widgetFor('body'))),
+  )
+  CMS.init({ config })
+</script>
