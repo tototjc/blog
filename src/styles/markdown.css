@@ -6,6 +6,25 @@ article {
   overflow-wrap: break-word;
   text-align: start;
 
+  a {
+    color: var(--c-active);
+    text-decoration: dashed underline currentcolor 0.1em;
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      text-decoration-style: solid;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  del {
+    color: var(--c-text-bland);
+    text-decoration-color: currentcolor;
+  }
+
   h1,
   h2,
   h3,
@@ -14,6 +33,15 @@ article {
   h6 {
     margin-block: 0.7em 0.2em;
     font-weight: 500;
+
+    & > a.anchor {
+      margin-inline-start: 0.5rem;
+      transition: opacity 0.1s ease-in-out;
+    }
+
+    &:not(:hover) > a.anchor {
+      opacity: 0;
+    }
   }
 
   h1 {
@@ -40,27 +68,19 @@ article {
     font-size: 1em;
   }
 
-  strong {
-    font-weight: 600;
-  }
-
-  del {
-    color: var(--c-text-bland);
-    text-decoration-color: currentcolor;
-  }
-
-  a {
-    color: var(--c-active);
-    text-decoration: dashed underline currentcolor 0.1em;
-    text-underline-offset: 0.2em;
-
-    &:hover {
-      text-decoration-style: solid;
-    }
-  }
-
   p {
     margin-block: 0.5em;
+  }
+
+  p:has(img) {
+    margin-inline: 0.25em;
+    text-align: center;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   ul,
@@ -113,17 +133,6 @@ article {
     border: none;
     border-style: inset;
     border-width: 0.05em;
-  }
-
-  p:has(img) {
-    margin-inline: 0.25em;
-    text-align: center;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
   }
 
   pre,

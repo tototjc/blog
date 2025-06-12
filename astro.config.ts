@@ -1,8 +1,11 @@
 import { defineConfig } from 'astro/config'
+import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+
 import sitemap from '@astrojs/sitemap'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 
 import devtoolsJson from 'vite-plugin-devtools-json'
@@ -34,7 +37,16 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
+      rehypeHeadingIds,
       [rehypeKatex, { strict: false, trust: true }],
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'append',
+          properties: { className: 'anchor' },
+          content: { type: 'text', value: '#' },
+        },
+      ],
       [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
     ],
     shikiConfig: {

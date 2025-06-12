@@ -1,12 +1,13 @@
-packageExtensions:
-  decap-cms-widget-markdown:
-    peerDependencies:
-      slate-hyperscript: '*'
+shellEmulator: true
 publicHoistPattern:
   - '*types*'
-  - '*eslint*'
+  - '@eslint/*'
+  - '@astrojs/*'
   - katex
   - react
   - decap-cms-app
   - decap-cms-core
-shellEmulator: true
+packageExtensions:
+  decap-cms-widget-markdown:
+    peerDependencies:
+      slate-hyperscript: '*'
