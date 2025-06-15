@@ -18,7 +18,24 @@ type Props = ComponentProps<typeof GeneralLayout> & {
   }
 }
 
-const { title, description, categories, pubDate, updDate, readingTime } = Astro.props
+const {
+  props: { title, description, categories, pubDate, updDate, readingTime },
+  currentLocale,
+} = Astro
+
+const dateFormatter = new Intl.DateTimeFormat(currentLocale ?? 'zh-CN', {
+  dateStyle: 'short',
+}).format
+
+const categoriesWithSlug = categories?.map(category => ({
+  name: category,
+  slug: `/category/${category}/1`,
+})) || [
+  {
+    name: 'Others',
+    slug: '/categories/others',
+  },
+]
 ---
 
 <GeneralLayout {title} {description}>
@@ -28,17 +45,17 @@ const { title, description, categories, pubDate, updDate, readingTime } = Astro.
       <div>
         {categories && (
           <span>
-            Category: <FormattedCategories categories={categories} />
+            Category: <FormattedCategories categories={categoriesWithSlug} />
           </span>
         )}
         {pubDate && (
           <span>
-            Publish: <FormattedDate date={pubDate} />
+            Publish: <FormattedDate date={pubDate} formatter={dateFormatter} />
           </span>
         )}
         {updDate && (
           <span>
-            Update: <FormattedDate date={updDate} />
+            Update: <FormattedDate date={updDate} formatter={dateFormatter} />
           </span>
         )}
         {readingTime && (

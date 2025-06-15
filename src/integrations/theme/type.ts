@@ -1,4 +1,3 @@
-import type { CmsBackend } from 'decap-cms-core'
 import type { PagefindServiceConfig } from 'pagefind'
 
 export type SiteConfig = {
@@ -20,8 +19,4 @@ export type SiteConfig = {
     [key: string]: string
   }[]
   search?: PagefindServiceConfig
-  cms: {
-    locale?: string
-    backend: CmsBackend
-  }
 }

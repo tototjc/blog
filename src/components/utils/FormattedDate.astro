@@ -3,18 +3,10 @@ import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'time'> {
   date: Date
+  formatter: (date: Date) => string
 }
 
-const {
-  props: { date, ...props },
-  currentLocale,
-} = Astro
+const { date, formatter, ...props } = Astro.props
 ---
 
-<time datetime={date.toISOString()} {...props}>
-  {
-    date.toLocaleDateString(currentLocale, {
-      dateStyle: 'short',
-    })
-  }
-</time>
+<time datetime={date.toISOString()} {...props}>{formatter(date)}</time>

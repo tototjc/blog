@@ -1,13 +1,17 @@
 import { defineConfig } from 'astro/config'
+import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+
 import sitemap from '@astrojs/sitemap'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 
 import devtoolsJson from 'vite-plugin-devtools-json'
 
-import siteConfigHelper from './src/integrations/site-config-helper'
+import blogTheme from './src/integrations/theme'
+import astroDecapCms from './src/integrations/astro-decap-cms'
 
 export default defineConfig({
   site: 'https://i.cuicu.icu',
@@ -34,7 +38,16 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
+      rehypeHeadingIds,
       [rehypeKatex, { strict: false, trust: true }],
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'append',
+          properties: { className: 'anchor' },
+          content: { type: 'text', value: '#' },
+        },
+      ],
       [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
     ],
     shikiConfig: {
@@ -48,7 +61,7 @@ export default defineConfig({
     sitemap({
       filter: page => !new URL(page).pathname.startsWith('/admin'),
     }),
-    siteConfigHelper({
+    blogTheme({
       title: "Gaaising's Blog",
       description: "Gaaising Tam's personal blog",
       author: {
@@ -70,7 +83,13 @@ export default defineConfig({
       search: {
         forceLanguage: 'zh',
       },
-      cms: {
+    }),
+    astroDecapCms({
+      previewContainer: {
+        tag: 'article',
+      },
+      previewStyles: ['/src/styles/global.css', '/src/styles/markdown.css'],
+      cmsConfig: {
         locale: 'zh_Hans',
         backend: {
           name: 'github',
@@ -78,6 +97,57 @@ export default defineConfig({
           branch: 'main',
           base_url: 'https://decapcms-auth.tototjc.workers.dev',
         },
+        media_folder: 'assets',
+        collections: [
+          {
+            name: 'posts',
+            label: 'Posts',
+            create: true,
+            folder: 'post',
+            format: 'frontmatter',
+            extension: 'md',
+            slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}',
+            summary: '{{title}} - {{filename}} - {{commit_date}}',
+            sortable_fields: ['commit_date', 'title', 'pubDate', 'updDate'],
+            view_groups: [
+              { field: 'category', label: 'Category' },
+              { field: 'pubDate', label: 'Publish Year', pattern: '\\d{4}' },
+              { field: 'updDate', label: 'Update Year', pattern: '\\d{4}' },
+            ],
+            fields: [
+              { name: 'title', label: 'Title', widget: 'string', required: true, i18n: true },
+              { name: 'category', label: 'Category', widget: 'string' },
+              { name: 'pubDate', label: 'Publish Date', widget: 'datetime' },
+              { name: 'updDate', label: 'Update Date', widget: 'datetime', default: '{{now}}' },
+              { name: 'body', label: 'Text', widget: 'markdown', i18n: true },
+            ],
+          },
+          {
+            name: 'pages',
+            label: 'Pages',
+            sortable_fields: [],
+            files: [
+              {
+                name: 'about',
+                label: 'About',
+                file: 'about.md',
+                fields: [
+                  { name: 'title', label: 'Title', widget: 'hidden', default: 'About', required: true },
+                  { name: 'body', label: 'Text', widget: 'markdown' },
+                ],
+              },
+              {
+                name: 'blogroll',
+                label: 'Blogroll',
+                file: 'blogroll.md',
+                fields: [
+                  { name: 'title', label: 'Title', widget: 'hidden', default: 'Blogroll', required: true },
+                  { name: 'body', label: 'Text', widget: 'markdown' },
+                ],
+              },
+            ],
+          },
+        ],
       },
     }),
   ],

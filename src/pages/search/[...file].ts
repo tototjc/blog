@@ -7,7 +7,7 @@ import { search } from 'virtual:config'
 
 import { posts } from '@/utils/getContents'
 
-import Page from '@/pages/[...slug]/index.astro'
+import { default as Page, getStaticPaths as pageGetStaticPaths } from '@/pages/[...slug]/index.astro'
 
 const { index, errors: createErrors } = await createIndex(search)
 
@@ -21,8 +21,8 @@ for (const entry of posts) {
   await index.addHTMLFile({
     url: entry.id,
     content: await container.renderToString(Page, {
-      params: { slug: entry.id },
-      props: { entry },
+      params: { slug: entry.id } satisfies InferGetStaticParamsType<typeof pageGetStaticPaths>,
+      props: { entry } satisfies InferGetStaticPropsType<typeof pageGetStaticPaths>,
       partial: false,
     }),
   })
