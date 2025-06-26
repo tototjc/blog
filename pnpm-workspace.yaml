@@ -6,8 +6,3 @@ publicHoistPattern:
   - katex
   - react
   - decap-cms-app
-  - decap-cms-core
-packageExtensions:
-  decap-cms-widget-markdown:
-    peerDependencies:
-      slate-hyperscript: '*'
