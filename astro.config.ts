@@ -20,7 +20,6 @@ export default defineConfig({
     contentIntellisense: true,
     headingIdCompat: true,
     preserveScriptOrder: true,
-    responsiveImages: true,
   },
   prefetch: {
     prefetchAll: true,
@@ -32,8 +31,9 @@ export default defineConfig({
         protocol: 'https',
       },
     ],
-    experimentalLayout: 'full-width',
-    experimentalObjectFit: 'contain',
+    responsiveStyles: true,
+    layout: 'full-width',
+    objectFit: 'contain',
   },
   markdown: {
     remarkPlugins: [remarkMath],
