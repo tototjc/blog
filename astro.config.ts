@@ -59,7 +59,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: page => !new URL(page).pathname.startsWith('/admin'),
+      filter: page => !URL.parse(page)?.pathname.startsWith('/admin'),
     }),
     blogTheme({
       title: "Gaaising's Blog",

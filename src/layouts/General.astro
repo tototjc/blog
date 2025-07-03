@@ -22,10 +22,12 @@ interface Props {
 
 const {
   props: { title, description },
-  site = 'https://example.com/',
+  site,
   url,
   currentLocale,
 } = Astro
+
+const canonicalURL = new URL(url.pathname, site ?? url)
 ---
 
 <!doctype html>
@@ -34,12 +36,12 @@ const {
     {
       getMetaTags({
         type: url.pathname.startsWith('/posts/') ? 'article' : 'website',
-        sitename: siteTitle,
-        url,
+        url: canonicalURL,
         title: title ?? siteTitle,
         description: description ?? siteDesc,
+        sitename: siteTitle,
         image: {
-          url: new URL(url.pathname + '/og.png', url),
+          url: new URL('./og.png', canonicalURL.href.replace(/(?<!\/)$/, '/')),
           type: 'image/png',
           width: 1200,
           height: 630,
@@ -52,10 +54,10 @@ const {
       }).map(attrs => <meta {...attrs} />)
     }
 
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="canonical" href={new URL(url.pathname, site)} />
-    <link rel="alternate" type="application/rss+xml" title={siteTitle} href={new URL('rss.xml', site)} />
+    <link rel="alternate" type="application/rss+xml" title={siteTitle} href={URL.parse('/rss.xml', site)} />
 
     <slot name="head" />
 
