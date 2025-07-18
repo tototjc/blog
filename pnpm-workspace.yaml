@@ -1,8 +1,8 @@
+packages:
+  - 'packages/*'
 shellEmulator: true
 publicHoistPattern:
   - '*types*'
   - '@eslint/*'
   - '@astrojs/*'
   - katex
-  - react
-  - decap-cms-app
