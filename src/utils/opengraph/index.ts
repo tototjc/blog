@@ -18,10 +18,10 @@ export type ImageOptions = {
 
 export type MetaTagsOptions = {
   type: 'website' | 'article'
-  sitename: string
   url: URL
   title: string
   description: string
+  sitename?: string
   image?: {
     url: URL
     type: `image/${string}`
@@ -49,15 +49,11 @@ export const getImage = async ({ content, format }: ImageOptions) => {
     .toBuffer({ resolveWithObject: true })
 }
 
-export const getMetaTags = (opts: MetaTagsOptions) =>
-  [
+export const getMetaTags = (opts: MetaTagsOptions): HTMLAttributes<'meta'>[] => {
+  const metaTags = [
     {
       property: 'og:type',
       content: opts.type,
-    },
-    {
-      property: 'og:site_name',
-      content: opts.sitename,
     },
     {
       property: 'og:url',
@@ -71,40 +67,48 @@ export const getMetaTags = (opts: MetaTagsOptions) =>
       property: 'og:description',
       content: opts.description,
     },
-    ...(opts.image
-      ? [
-          {
-            property: 'og:image',
-            content: opts.image.url,
-          },
-          {
-            property: 'og:image:type',
-            content: opts.image.type,
-          },
-          {
-            property: 'og:image:width',
-            content: opts.image.width.toString(),
-          },
-          {
-            property: 'og:image:height',
-            content: opts.image.height.toString(),
-          },
-          {
-            property: 'og:image:alt',
-            content: opts.image.alt,
-          },
-        ]
-      : []),
-    ...(opts.locale
-      ? [
-          {
-            property: 'og:locale',
-            content: opts.locale.default,
-          },
-          ...opts.locale.alternate.map(locale => ({
-            property: 'og:locale:alternate',
-            content: locale,
-          })),
-        ]
-      : []),
-  ] satisfies HTMLAttributes<'meta'>[]
+  ]
+  if (opts.sitename) {
+    metaTags.push({
+      property: 'og:site_name',
+      content: opts.sitename,
+    })
+  }
+  if (opts.image) {
+    metaTags.push(
+      {
+        property: 'og:image',
+        content: opts.image.url,
+      },
+      {
+        property: 'og:image:type',
+        content: opts.image.type,
+      },
+      {
+        property: 'og:image:width',
+        content: opts.image.width.toString(),
+      },
+      {
+        property: 'og:image:height',
+        content: opts.image.height.toString(),
+      },
+      {
+        property: 'og:image:alt',
+        content: opts.image.alt,
+      },
+    )
+  }
+  if (opts.locale) {
+    metaTags.push(
+      {
+        property: 'og:locale',
+        content: opts.locale.default,
+      },
+      ...opts.locale.alternate.map(locale => ({
+        property: 'og:locale:alternate',
+        content: locale,
+      })),
+    )
+  }
+  return metaTags
+}

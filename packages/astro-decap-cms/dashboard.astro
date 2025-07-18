@@ -10,7 +10,7 @@
 </html>
 
 <script>
-  import CMS from 'decap-cms-app/dist/decap-cms-app.js'
+  import CMS from 'decap-cms-app'
   import { config, previewStyleParams, previewContainerParams } from 'astro-decap-cms:config'
   import { createElement } from 'react'
   previewStyleParams?.forEach(style => CMS.registerPreviewStyle(...style))

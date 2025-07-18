@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 
 import sitemap from '@astrojs/sitemap'
+import astroDecapCms from 'astro-decap-cms'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
@@ -11,7 +12,6 @@ import rehypeExternalLinks from 'rehype-external-links'
 import devtoolsJson from 'vite-plugin-devtools-json'
 
 import blogTheme from './src/integrations/theme'
-import astroDecapCms from './src/integrations/astro-decap-cms'
 
 export default defineConfig({
   site: 'https://i.cuicu.icu',
@@ -59,7 +59,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: page => !new URL(page).pathname.startsWith('/admin'),
+      filter: page => !URL.parse(page)?.pathname.startsWith('/admin'),
     }),
     blogTheme({
       title: "Gaaising's Blog",
