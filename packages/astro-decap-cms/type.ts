@@ -1,5 +1,11 @@
 import type { JSX } from 'react'
-import type { CmsConfig, CMS } from 'decap-cms-core'
+import { DecapCmsCore, type CmsConfig } from 'decap-cms-core'
+
+export type UserCmsConfig = Omit<CmsConfig, 'load_config_file'>
+
+export type PreviewStyle = string | { src: string; raw: boolean }
+
+export type PreviewStyleParam = Parameters<typeof DecapCmsCore.registerPreviewStyle>
 
 export type PreviewContainerElem<T extends keyof JSX.IntrinsicElements> = {
   tag: T
@@ -12,13 +18,13 @@ export type PreviewContainerWithTarget = PreviewContainer & { target: string }
 
 export interface UserConfig {
   cmsRoute?: string
-  cmsConfig: Exclude<CmsConfig, 'load_config_file'>
-  previewStyles?: (string | { src: string; raw: boolean })[]
+  cmsConfig: UserCmsConfig
+  previewStyles?: PreviewStyle[]
   previewContainer?: PreviewContainer | PreviewContainerWithTarget[]
 }
 
 export interface Config {
   config: CmsConfig
-  previewStyleParams?: Parameters<CMS['registerPreviewStyle']>[]
+  previewStyleParams?: PreviewStyleParam[]
   previewContainerParams?: PreviewContainerWithTarget[]
 }

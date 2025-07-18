@@ -1,6 +1,12 @@
 import type { AstroConfig } from 'astro'
-import type { CMS, CmsConfig, CmsCollection, CmsCollectionFile } from 'decap-cms-core'
-import type { UserConfig, PreviewContainer, PreviewContainerWithTarget } from './type'
+import type { CmsConfig, CmsCollection, CmsCollectionFile } from 'decap-cms-core'
+import type {
+  UserCmsConfig,
+  PreviewStyle,
+  PreviewStyleParam,
+  PreviewContainer,
+  PreviewContainerWithTarget,
+} from './type'
 
 export const getPreviewContainerWithTarget = (
   items: (CmsCollection | CmsCollectionFile)[],
@@ -17,7 +23,7 @@ export const getPreviewContainerWithTarget = (
   })
 }
 
-export const getCmsConfigWithDefaults = (userConfig: UserConfig['cmsConfig'], astroConfig: AstroConfig): CmsConfig => {
+export const getCmsConfigWithDefaults = (userConfig: UserCmsConfig, astroConfig: AstroConfig): CmsConfig => {
   const { site, i18n } = astroConfig
   const defaultCmsConfig: Partial<CmsConfig> = {
     load_config_file: false,
@@ -34,8 +40,6 @@ export const getCmsConfigWithDefaults = (userConfig: UserConfig['cmsConfig'], as
   }
 }
 
-export const normalizePreviewStyles = (
-  styles: NonNullable<UserConfig['previewStyles']>,
-): Parameters<CMS['registerPreviewStyle']>[] => {
+export const normalizePreviewStyles = (styles: PreviewStyle[]): PreviewStyleParam[] => {
   return styles.map(style => (typeof style === 'string' ? [style] : [style.src, { raw: style.raw }]))
 }
