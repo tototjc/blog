@@ -8,8 +8,10 @@ import { includeIgnoreFile } from '@eslint/compat'
 import { fileURLToPath } from 'node:url'
 
 export default defineConfig([
-  includeIgnoreFile(fileURLToPath(import.meta.resolve('./.gitignore'))),
+  includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
   js.configs.recommended,
+  // eslint-disable-next-line
+  // @ts-expect-error
   ts.configs.recommended,
   astro.configs.recommended,
   prettierConfig,

@@ -20,6 +20,7 @@ export default defineConfig({
     contentIntellisense: true,
     headingIdCompat: true,
     preserveScriptOrder: true,
+    rawEnvValues: true,
   },
   prefetch: {
     prefetchAll: true,
