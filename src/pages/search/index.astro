@@ -2,32 +2,35 @@
 import GeneralLayout from '@/layouts/General.astro'
 
 import SearchIcon from '@/components/icons/search.svg'
-
-import '@pagefind/modular-ui/css/ui.css'
 ---
 
 <GeneralLayout title="Search">
-  <div>
+  <search>
     <label>
       <SearchIcon class="icon" />
-      <input id="search" placeholder="Search" type="text" autocomplete="off" />
+      <input id="search-input" type="search" placeholder="Search" autocomplete="off" />
     </label>
-    <ul id="results"></ul>
-  </div>
+    <ul id="search-results"></ul>
+  </search>
 </GeneralLayout>
 
 <script>
   import { Instance, Input, ResultList } from '@pagefind/modular-ui'
 
-  const searchInstance = new Instance({ bundlePath: `${import.meta.env.BASE_URL}search/` })
+  type ResultInfo = { url: string; excerpt: string; [key: string]: unknown }
 
-  window.initSearch = () => {
-    searchInstance.add(new Input({ inputElement: '#search' }))
-    searchInstance.add(
+  type ResultMeta = { title: string; [key: string]: unknown }
+
+  type Result = ResultInfo & { meta: ResultMeta }
+
+  const initSearch = () => {
+    const instance = new Instance({ bundlePath: `${import.meta.env.BASE_URL}search/` })
+    instance.add(new Input({ inputElement: '#search-input' }))
+    instance.add(
       new ResultList({
-        containerElement: '#results',
+        containerElement: '#search-results',
         placeholderTemplate: () => document.createElement('li'),
-        resultTemplate: ({ url, meta: { title }, excerpt }: never) => {
+        resultTemplate: ({ url, meta: { title }, excerpt }: Result) => {
           const elem = document.createElement('li')
           elem.innerHTML = `<a href="${url}"><h4>${title}</h4><p>${excerpt}</p></a>`
           return elem
@@ -35,14 +38,18 @@ import '@pagefind/modular-ui/css/ui.css'
       }),
     )
   }
+
+  window.addEventListener('search:init', initSearch)
+
+  window.addEventListener('DOMContentLoaded', initSearch, { once: true })
 </script>
 
 <script is:inline data-astro-rerun>
-  document.addEventListener('astro:page-load', () => window.initSearch(), { once: true })
+  window.dispatchEvent(new Event('search:init'))
 </script>
 
 <style>
-  div {
+  search {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
