@@ -8,9 +8,9 @@ import SearchIcon from '@/components/icons/search.svg'
   <search>
     <label>
       <SearchIcon class="icon" />
-      <input id="search-input" type="search" placeholder="Search" autocomplete="off" />
+      <input data-search-input type="search" placeholder="Search" autocomplete="off" />
     </label>
-    <ul id="search-results"></ul>
+    <ul data-search-results></ul>
   </search>
 </GeneralLayout>
 
@@ -21,20 +21,37 @@ import SearchIcon from '@/components/icons/search.svg'
 
   type ResultMeta = { title: string; [key: string]: unknown }
 
-  type Result = ResultInfo & { meta: ResultMeta }
+  type SubResult = ResultInfo & ResultMeta
+
+  type Result = ResultInfo & { meta: ResultMeta; sub_results: SubResult[] }
+
+  const isResult = (obj: Result | SubResult): obj is Result => 'sub_results' in obj
+
+  const renderResult = (result: Result | SubResult) => {
+    const notSub = isResult(result)
+    const link = document.createElement('a')
+    link.href = result.url
+    link.textContent = notSub ? result.meta.title : result.title
+    const excerpt = document.createElement('p')
+    excerpt.innerHTML = result.excerpt
+    const item = document.createElement('li')
+    item.append(link, excerpt)
+    if (notSub) {
+      const subList = document.createElement('ul')
+      subList.append(...result.sub_results.map(renderResult))
+      item.append(subList)
+    }
+    return item
+  }
 
   const initSearch = () => {
     const instance = new Instance({ bundlePath: `${import.meta.env.BASE_URL}search/` })
-    instance.add(new Input({ inputElement: '#search-input' }))
+    instance.add(new Input({ inputElement: 'search input[type="search"][data-search-input]' }))
     instance.add(
       new ResultList({
-        containerElement: '#search-results',
+        containerElement: 'search ul[data-search-results]',
         placeholderTemplate: () => document.createElement('li'),
-        resultTemplate: ({ url, meta: { title }, excerpt }: Result) => {
-          const elem = document.createElement('li')
-          elem.innerHTML = `<a href="${url}"><h4>${title}</h4><p>${excerpt}</p></a>`
-          return elem
-        },
+        resultTemplate: renderResult,
       }),
     )
   }
@@ -98,32 +115,60 @@ import SearchIcon from '@/components/icons/search.svg'
         }
       }
     }
+  }
+</style>
 
-    ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      color: var(--c-text);
-      padding: 0.5rem;
+<style is:global>
+  search ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    color: var(--c-text);
+    padding: 0.5rem;
 
-      :global(li h4) {
-        font-size: 1.2rem;
+    li {
+      a {
+        font-size: 1.1rem;
         font-weight: 500;
       }
 
-      :global(li p) {
-        font-size: 1rem;
-        font-weight: 400;
-        border-inline-start: 0.2em solid var(--c-text-bland);
-        padding-inline-start: 0.5em;
+      :where(a:hover) {
+        text-decoration: underline;
       }
 
-      :global(li p mark) {
-        color: currentcolor;
-        background: #ee8;
-        text-decoration: underline wavy currentcolor 0.1rem;
-        text-underline-offset: 0.15rem;
+      p {
+        font-size: 0.8rem;
+        font-weight: 400;
+        overflow-wrap: break-word;
+        border-inline-start: 0.2em solid var(--c-text-bland);
+        padding-inline-start: 0.5em;
+
+        mark {
+          color: currentcolor;
+          background: #ee8;
+          text-decoration: underline wavy currentcolor 0.1rem;
+          text-underline-offset: 0.15rem;
+        }
+      }
+    }
+
+    li & {
+      gap: 0.5rem;
+      margin-inline: 0.5rem;
+
+      li {
+        padding-inline-start: 0.5rem;
+
+        &::marker {
+          content: '⤷';
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+
+        a {
+          font-size: 0.9rem;
+        }
       }
     }
   }
