@@ -32,7 +32,7 @@ const canonicalURL = new URL(url.pathname, site ?? url)
 
 <!doctype html>
 <html lang={currentLocale}>
-  <Head title={title ? `${title} | ${siteTitle}` : siteTitle} {description} {author}>
+  <Head title={title ? `${title} | ${siteTitle}` : siteTitle} description={description ?? siteDesc} {author}>
     {
       getMetaTags({
         type: url.pathname.startsWith('/posts/') ? 'article' : 'website',

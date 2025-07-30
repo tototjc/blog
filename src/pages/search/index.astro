@@ -57,12 +57,10 @@ import SearchIcon from '@/components/icons/search.svg'
   }
 
   window.addEventListener('search:init', initSearch)
-
-  window.addEventListener('DOMContentLoaded', initSearch, { once: true })
 </script>
 
 <script is:inline data-astro-rerun>
-  window.dispatchEvent(new Event('search:init'))
+  document.addEventListener('astro:page-load', () => window.dispatchEvent(new Event('search:init')), { once: true })
 </script>
 
 <style>
