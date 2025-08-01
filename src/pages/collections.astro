@@ -13,7 +13,7 @@ import GeneralLayout from '@/layouts/General.astro'
         <ul>
           {group.map(({ path: collectionPath, title, collection }) => (
             <li>
-              <a href={`/${groupPath}/${collectionPath}/1`}>
+              <a href={`/${groupPath}/${collectionPath}`}>
                 <span>{title}</span>
                 <i>﹝{collection.length}﹞</i>
               </a>

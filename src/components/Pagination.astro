@@ -24,14 +24,7 @@ const { page, ...props } = Astro.props
     Array.from({ length: page.lastPage }, (_, i) => i + 1).map(num => (
       <a
         class:list={[{ active: num === page.currentPage }]}
-        href={
-          '/' +
-          page.url.current
-            ?.split('/')
-            .filter(n => n)
-            .with(-1, String(num))
-            .join('/')
-        }
+        href={page.url.current.replace(/(\/\d+|\/)?$/, num === 1 ? '/' : `/${num}`)}
       >
         {num}
       </a>

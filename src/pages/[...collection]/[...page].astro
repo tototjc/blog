@@ -48,7 +48,7 @@ const dateFormatter = new Intl.DateTimeFormat(currentLocale ?? 'zh-CN', {
         const date = updDate ?? pubDate
         const categoriesWithSlug = categories?.map(category => ({
           name: category,
-          slug: `/category/${category}/1`,
+          slug: `/category/${category}`,
         })) || [
           {
             name: 'Others',
