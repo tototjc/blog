@@ -39,7 +39,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
-      rehypeHeadingIds,
+      [rehypeHeadingIds, { headingIdCompat: true }],
       [rehypeKatex, { strict: false, trust: true }],
       [
         rehypeAutolinkHeadings,
