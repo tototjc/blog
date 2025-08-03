@@ -1,7 +1,8 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 
 import sitemap from '@astrojs/sitemap'
+import partytown from '@astrojs/partytown'
 import astroDecapCms from 'astro-decap-cms'
 
 import remarkMath from 'remark-math'
@@ -58,7 +59,17 @@ export default defineConfig({
       },
     },
   },
+  env: {
+    schema: {
+      GTM_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
   integrations: [
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
     sitemap({
       filter: page => !URL.parse(page)?.pathname.startsWith('/admin'),
     }),

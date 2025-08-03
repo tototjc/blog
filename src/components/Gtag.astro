@@ -1,0 +1,17 @@
+---
+import { GTM_ID } from 'astro:env/client'
+
+const url = new URL(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`)
+---
+
+{
+  GTM_ID && (
+    <>
+      <script is:inline type="text/partytown" src={url.href}></script>
+      <script is:inline type="text/partytown">
+        window.dataLayer ??= []
+        window.dataLayer.push({ 'gtm.start': new Date().getTime(), 'event': 'gtm.js' })
+      </script>
+    </>
+  )
+}
