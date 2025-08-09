@@ -6,7 +6,7 @@
     "./dashboard.astro": "./dashboard.astro"
   },
   "devDependencies": {
-    "astro": "^5.12.8",
+    "astro": "^5.12.9",
     "decap-cms-app": "^3.8.3",
     "decap-cms-core": "^3.8.1",
     "react": "^19.1.1",
