@@ -12,6 +12,11 @@ import SearchIcon from '@/components/icons/search.svg'
     </label>
     <ul data-search-results></ul>
   </search>
+  <noscript>
+    <div>
+      <strong>The search function will not work without JavaScript.</strong>
+    </div>
+  </noscript>
 </GeneralLayout>
 
 <script>
@@ -69,13 +74,13 @@ import SearchIcon from '@/components/icons/search.svg'
     flex-direction: column;
     gap: 1.5rem;
     margin: 1.5rem;
+    color: var(--c-text);
 
     label {
       display: flex;
       place-items: center;
       place-content: start;
       gap: 1rem;
-      color: var(--c-text);
       font-size: 1.1rem;
       border-bottom: 0.1rem solid currentcolor;
       padding: 0.75rem 1rem;
@@ -114,6 +119,23 @@ import SearchIcon from '@/components/icons/search.svg'
       }
     }
   }
+
+  @media not (scripting: enabled) {
+    search {
+      display: none;
+    }
+
+    div {
+      color: var(--c-text);
+      margin: 2rem 1rem;
+      text-align: center;
+
+      strong {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+    }
+  }
 </style>
 
 <style is:global>
@@ -122,7 +144,6 @@ import SearchIcon from '@/components/icons/search.svg'
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    color: var(--c-text);
     padding: 0.5rem;
 
     li {
