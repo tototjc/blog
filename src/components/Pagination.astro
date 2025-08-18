@@ -22,13 +22,15 @@ const { page, ...props } = Astro.props
   }
   {
     Array.from({ length: page.lastPage }, (_, i) => i + 1).map(num => {
-      const baseUrl = (
+      const baseUrl =
         page.url.first ??
         (page.lastPage === 1 ? page.url.last : page.url.last?.replace(/\/\d+$/, '')) ??
         page.url.current
-      ).replace(/\/+$/, '')
       return (
-        <a class:list={[{ active: num === page.currentPage }]} href={baseUrl + (num === 1 ? '' : `/${num}`)}>
+        <a
+          class:list={[{ active: num === page.currentPage }]}
+          href={num === 1 ? baseUrl : baseUrl.replace(/\/?$/, `/${num}`)}
+        >
           {num}
         </a>
       )
