@@ -10,8 +10,6 @@ import rehypeKatex from 'rehype-katex'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 
-import devtoolsJson from 'vite-plugin-devtools-json'
-
 import blogTheme from './src/integrations/theme'
 
 export default defineConfig({
@@ -21,7 +19,8 @@ export default defineConfig({
     contentIntellisense: true,
     headingIdCompat: true,
     preserveScriptOrder: true,
-    rawEnvValues: true,
+    staticImportMetaEnv: true,
+    chromeDevtoolsWorkspace: true,
   },
   prefetch: {
     prefetchAll: true,
@@ -167,7 +166,6 @@ export default defineConfig({
     css: {
       devSourcemap: true,
     },
-    plugins: [devtoolsJson()],
     resolve: {
       alias: {
         '@/': 'src/',
