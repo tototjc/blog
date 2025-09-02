@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" version="5"/>
   <xsl:template match="/">
     <xsl:variable name="pageTitle" select="normalize-space(concat(/rss/channel/title, ' ', 'Web Feed'))" />
     <xsl:variable name="baseUrl" select="/rss/channel/link" />
     <xsl:variable name="rssFile" select="'rss.xml'" />
     <xsl:variable name="rssUrl" select="concat($baseUrl, substring('/', 1, 1 - number(substring($baseUrl, string-length($baseUrl)) = '/')), $rssFile)" />
-    <html>
+    <xsl:variable name="lang" select="rss/channel/language" />
+    <html lang="{$lang or false()}">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
