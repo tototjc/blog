@@ -29,7 +29,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 type Params = InferGetStaticParamsType<typeof getStaticPaths>
 
 export const GET: APIRoute<Props, Params> = ({ props: { img } }) =>
-  new Response(img.data, {
+  new Response(img.data as Buffer<ArrayBuffer>, {
     headers: {
       'Content-Type': lookup(img.info.format) ?? 'application/octet-stream',
     },

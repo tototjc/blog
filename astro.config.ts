@@ -1,15 +1,14 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 
 import sitemap from '@astrojs/sitemap'
+import partytown from '@astrojs/partytown'
 import astroDecapCms from 'astro-decap-cms'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
-
-import devtoolsJson from 'vite-plugin-devtools-json'
 
 import blogTheme from './src/integrations/theme'
 
@@ -20,6 +19,8 @@ export default defineConfig({
     contentIntellisense: true,
     headingIdCompat: true,
     preserveScriptOrder: true,
+    staticImportMetaEnv: true,
+    chromeDevtoolsWorkspace: true,
   },
   prefetch: {
     prefetchAll: true,
@@ -38,7 +39,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
-      rehypeHeadingIds,
+      [rehypeHeadingIds, { headingIdCompat: true }],
       [rehypeKatex, { strict: false, trust: true }],
       [
         rehypeAutolinkHeadings,
@@ -57,7 +58,17 @@ export default defineConfig({
       },
     },
   },
+  env: {
+    schema: {
+      GTM_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
   integrations: [
+    partytown({
+      config: {
+        forward: ['dataLayer.push', 'clarity'],
+      },
+    }),
     sitemap({
       filter: page => !URL.parse(page)?.pathname.startsWith('/admin'),
     }),
@@ -155,7 +166,6 @@ export default defineConfig({
     css: {
       devSourcemap: true,
     },
-    plugins: [devtoolsJson()],
     resolve: {
       alias: {
         '@/': 'src/',

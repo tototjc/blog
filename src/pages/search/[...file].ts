@@ -40,7 +40,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 type Params = InferGetStaticParamsType<typeof getStaticPaths>
 
 export const GET: APIRoute<Props, Params> = ({ params, props }) =>
-  new Response(props.data, {
+  new Response(props.data as Uint8Array<ArrayBuffer>, {
     headers: {
       'Content-Type': lookup(params.file) ?? 'application/octet-stream',
     },
